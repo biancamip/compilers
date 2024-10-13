@@ -7,12 +7,23 @@
 
 %{
     #include <stdio.h>
+    #include <string>
+    #include <map>
     #include "tokens.h"
 
+    #define ENTRY_IDENTIFIER 0
+    #define ENTRY_LIT_INT 1
+    #define ENTRY_LIT_CHAR 2
+    #define ENTRY_LIT_STRING 6
+    
     int running = 1;
     int lines = 1;
-    
-    void initMe() {}
+    std::map<std::string, int> symbolsTable;
+
+    void initMe() {
+        // re-initialize the map
+        symbolsTable = std::map<std::string, int>();  // Assign an empty map
+    }
 
     int getLineNumber() {
         return lines;
@@ -20,6 +31,18 @@
 
     int isRunning() {
         return running;
+    }
+
+    // Helper methods for debugging
+    void printMap() {
+        for (auto it = symbolsTable.begin(); it != symbolsTable.end(); ++it) {
+            printf("%s => %d\n", it->first.c_str(), it->second);
+        }
+    }
+
+    void insertSymbol(std::string value, int symbolType) {
+        symbolsTable.insert(std::make_pair(value, symbolType));
+        return;
     }
 %}
 
@@ -37,12 +60,15 @@
 "print"                             { return KW_PRINT; }
 "return"                            { return KW_RETURN; }
 
-\,|\;|\:                            { return yytext[0]; }
-\(|\)|\[|\]\{|\}                    { return yytext[0]; }
-\=|\+|\-|\*|\/|\%                   { return yytext[0]; }
-\<|\>|\&|\||\~                      { return yytext[0]; }
-
 "\n"                                { ++lines; }
+" "|\t|\r|\f|\v                     { }
+
+"#"[0-9]+                           {insertSymbol(yytext, ENTRY_LIT_INT); return LIT_INT;}
+"'"."'"                             {insertSymbol(yytext, ENTRY_LIT_CHAR); return LIT_CHAR;}
+\"[^\"]*\"                          {insertSymbol(yytext, ENTRY_LIT_STRING); return LIT_STRING;}
+
+\,|\;|\:|\(|\)|\[|\]\{|\}           { return yytext[0]; }
+\=|\+|\-|\*|\/|\%|\<|\>|\&|\||\~    { return yytext[0]; }
 
 "//"                                { BEGIN(LINE_COMMENT); }
 <LINE_COMMENT>.                     { }
@@ -53,15 +79,11 @@
 <BLOCK_COMMENT>"\n"                 { ++lines; }
 <BLOCK_COMMENT>"*/"                 { BEGIN(INITIAL); }
 
+.                                   { return TOKEN_ERROR; }
+
 %%
 /*
 #define TK_IDENTIFIER     280
-
-#define LIT_INT           281
-#define LIT_CHAR          282
-#define LIT_STRING        286
-
-#define TOKEN_ERROR       290
 */
 
 int yywrap() {

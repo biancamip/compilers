@@ -2,11 +2,14 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <string>
+
+int yylex();
 
 void initMe();
 int getLineNumber();
 int isRunning();
-int yylex();
+void printMap();
 
 int main(int argc, char **argv)
 {
@@ -28,5 +31,8 @@ int main(int argc, char **argv)
     }
 
     printf("Total lines analyzed: %d\n", getLineNumber());
+
+    printf("Symbols table:\n");
+    printMap();
     return 0;
 }

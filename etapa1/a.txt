@@ -1,3 +1,9 @@
 // this is a one-line comment
-some_token;
-(token_inside_parentheses)
+
+"someStringToken";
+(#2048)	;
+
+/* this is a block comment
+with more than one line
+okay bye */
+'b'
