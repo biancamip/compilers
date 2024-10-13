@@ -5,11 +5,13 @@
 #include <string>
 
 int yylex();
+extern FILE *yyin;
+extern char *yytext;
 
 void initMe();
-int getLineNumber();
 int isRunning();
-void printMap();
+int getLineNumber();
+void printSymbolsTable();
 
 int main(int argc, char **argv)
 {
@@ -20,19 +22,18 @@ int main(int argc, char **argv)
     }
 
     initMe();
-    extern FILE *yyin;
     yyin = fopen(argv[1], "r");
 
     int token = 0;
     while (isRunning())
     {
         token = yylex();
-        printf("TOKEN %d\n", token);
+        printf("TOKEN %d %s\n", token, yytext);
     }
 
-    printf("Total lines analyzed: %d\n", getLineNumber());
+    printf("Total lines: %d\n", getLineNumber());
 
     printf("Symbols table:\n");
-    printMap();
+    printSymbolsTable();
     return 0;
 }

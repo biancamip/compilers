@@ -1,6 +1,6 @@
 // this is a one-line comment
 
-"someStringToken";
+"someString";
 (#2048)	;
 
 /* this is a block comment

@@ -34,7 +34,7 @@
     }
 
     // Helper methods for debugging
-    void printMap() {
+    void printSymbolsTable() {
         for (auto it = symbolsTable.begin(); it != symbolsTable.end(); ++it) {
             printf("%s => %d\n", it->first.c_str(), it->second);
         }
@@ -71,10 +71,11 @@
 \=|\+|\-|\*|\/|\%|\<|\>|\&|\||\~    { return yytext[0]; }
 
 "//"                                { BEGIN(LINE_COMMENT); }
+"/*"                                { BEGIN(BLOCK_COMMENT); }
+
 <LINE_COMMENT>.                     { }
 <LINE_COMMENT>"\n"                  { ++lines; BEGIN(INITIAL); }
 
-"/*"                                { BEGIN(BLOCK_COMMENT); }
 <BLOCK_COMMENT>.                    { }
 <BLOCK_COMMENT>"\n"                 { ++lines; }
 <BLOCK_COMMENT>"*/"                 { BEGIN(INITIAL); }
