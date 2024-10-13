@@ -30,3 +30,9 @@
 *.exe
 *.out
 *.app
+
+# yacc
+*/*.yy.*
+
+# Project-specific generated files
+*/etapa1

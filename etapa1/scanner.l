@@ -1,0 +1,43 @@
+/* Bianca Pelegrini - 279598 */
+
+%{
+
+    #include <stdio.h>
+    #include "tokens.h"
+
+    int running = 1;
+    int lines = 1;
+%}
+
+%x LINE_COMMENT BLOCK_COMMENT
+
+%%
+
+"\n"                                        { ++lines; }
+"//"                                        { BEGIN(LINE_COMMENT); }
+<LINE_COMMENT>.                             { };
+<LINE_COMMENT>"\n"                          { ++lines; BEGIN(INITIAL); }
+
+"/*"                                        { BEGIN(BLOCK_COMMENT); }
+<BLOCK_COMMENT>.                            { }
+<BLOCK_COMMENT>"\n"                         { ++lines; }
+<BLOCK_COMMENT>"*/"                         { BEGIN(INITIAL); }
+
+%%
+
+void initMe() {
+    printf("Starting lexical analysis...\n");
+}
+
+int getLineNumber() {
+    return lines;
+}
+
+int isRunning() {
+    return running;
+}
+
+int yywrap() {
+    running = 0;
+    return 1;
+}
