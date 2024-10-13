@@ -1,2 +1,3 @@
 // this is a one-line comment
-some_token
+some_token;
+(token_inside_parentheses)
