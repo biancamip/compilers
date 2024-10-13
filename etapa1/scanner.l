@@ -1,12 +1,21 @@
 /* Bianca Pelegrini - 279598 */
 
 %{
-
     #include <stdio.h>
     #include "tokens.h"
 
     int running = 1;
     int lines = 1;
+    
+    void initMe() {}
+
+    int getLineNumber() {
+        return lines;
+    }
+
+    int isRunning() {
+        return running;
+    }
 %}
 
 %x LINE_COMMENT BLOCK_COMMENT
@@ -24,18 +33,6 @@
 <BLOCK_COMMENT>"*/"                         { BEGIN(INITIAL); }
 
 %%
-
-void initMe() {
-    printf("Starting lexical analysis...\n");
-}
-
-int getLineNumber() {
-    return lines;
-}
-
-int isRunning() {
-    return running;
-}
 
 int yywrap() {
     running = 0;
