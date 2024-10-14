@@ -1,7 +1,9 @@
 // Bianca M Pelegrini - 279598
 // this is a one-line comment. below this there are some newlines and a bunch of tabs and spaces
        
-( )
+( ) [] {}
+[test]
+{test2}
 
 "some string";
 (#2048)	;

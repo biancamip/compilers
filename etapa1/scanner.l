@@ -18,8 +18,8 @@
     std::map<std::string, int> symbolsTable;
 
     void initMe() {
-        running = 1;
         symbolsTable = std::map<std::string, int>();    // re-init the map
+        running = 1;
     }
 
     int getLineNumber() {
@@ -30,7 +30,7 @@
         return running;
     }
 
-    // Helper methods for debugging purposes
+    // Helper functions for debugging purposes
     void printSymbolsTable() {
         for (auto it = symbolsTable.begin(); it != symbolsTable.end(); ++it) {
             printf("%s => %d\n", it->first.c_str(), it->second);
@@ -66,7 +66,7 @@
 \"([^"\\]|\\.)*\"                   { insertSymbol(yytext, ENTRY_LIT_STRING); return LIT_STRING; }
 [a-zA-Z0-9]+                        { insertSymbol(yytext, ENTRY_IDENTIFIER); return TK_IDENTIFIER; }
 
-\,|\;|\:|\(|\)|\[|\]\{|\}           { return yytext[0]; }
+\,|\;|\:|\(|\)|\[|\]|\{|\}           { return yytext[0]; }
 \=|\+|\-|\*|\/|\%|\<|\>|\&|\||\~    { return yytext[0]; }
 
 "\n"                                { lines++; }
