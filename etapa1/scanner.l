@@ -16,13 +16,13 @@
     #define ENTRY_LIT_CHAR 2
     #define ENTRY_LIT_STRING 6
     
-    int running = 1;
+    int running = 0;
     int lines = 1;
     std::map<std::string, int> symbolsTable;
 
     void initMe() {
-        // re-initialize the map
-        symbolsTable = std::map<std::string, int>();  // Assign an empty map
+        running = 1;
+        symbolsTable = std::map<std::string, int>();    // re-init the map
     }
 
     int getLineNumber() {
@@ -33,7 +33,7 @@
         return running;
     }
 
-    // Helper methods for debugging
+    // Helper methods for debugging purposes
     void printSymbolsTable() {
         for (auto it = symbolsTable.begin(); it != symbolsTable.end(); ++it) {
             printf("%s => %d\n", it->first.c_str(), it->second);
@@ -64,31 +64,28 @@
 "print"                             { temp(yytext); return KW_PRINT; }
 "return"                            { temp(yytext); return KW_RETURN; }
 
-"\n"                                { lines++; }
-" "|\t|\r|\f|\v                     { /* skip any whitespaces except new line */}
-
-"#"[0-9]+                           { insertSymbol(yytext, ENTRY_LIT_INT); temp(yytext); return LIT_INT; }
-"'"."'"                             { insertSymbol(yytext, ENTRY_LIT_CHAR); temp(yytext); return LIT_CHAR; }
-\"([^"\\]|\\.)*\"                   { insertSymbol(yytext, ENTRY_LIT_STRING); temp(yytext); return LIT_STRING; }
-
+"#"[0-9]+                           { temp(yytext); insertSymbol(yytext, ENTRY_LIT_INT); return LIT_INT; }
+"'"."'"                             { temp(yytext); insertSymbol(yytext, ENTRY_LIT_CHAR); return LIT_CHAR; }
+\"([^"\\]|\\.)*\"                   { temp(yytext); insertSymbol(yytext, ENTRY_LIT_STRING); return LIT_STRING; }
+[a-zA-Z0-9]+                        { temp(yytext); insertSymbol(yytext, ENTRY_IDENTIFIER); return TK_IDENTIFIER; }
 
 \,|\;|\:|\(|\)|\[|\]\{|\}           { temp(yytext); return yytext[0]; }
 \=|\+|\-|\*|\/|\%|\<|\>|\&|\||\~    { temp(yytext); return yytext[0]; }
 
-"//"                                { BEGIN(LINE_COMMENT); }
-"/*"                                { BEGIN(BLOCK_COMMENT); }
-<LINE_COMMENT>.                     { }
-<LINE_COMMENT>"\n"                  { lines++; BEGIN(INITIAL); }
-<BLOCK_COMMENT>.                    { }
-<BLOCK_COMMENT>"\n"                 { lines++; }
-<BLOCK_COMMENT>"*/"                 { BEGIN(INITIAL); }
+"\n"                                { temp(yytext); lines++; }
+" "|\t|\r|\f|\v                     { temp(yytext); /* skip any whitespaces BUT new line */}
+
+"//"                                { temp(yytext); BEGIN(LINE_COMMENT); }
+"/*"                                { temp(yytext); BEGIN(BLOCK_COMMENT); }
+<LINE_COMMENT>.                     { temp(yytext); }
+<LINE_COMMENT>"\n"                  { temp(yytext); lines++; BEGIN(INITIAL); }
+<BLOCK_COMMENT>.                    { temp(yytext); }
+<BLOCK_COMMENT>"\n"                 { temp(yytext); lines++; }
+<BLOCK_COMMENT>"*/"                 { temp(yytext); BEGIN(INITIAL); }
 
 .                                   { temp(yytext); return TOKEN_ERROR; }
 
 %%
-/*
-#define TK_IDENTIFIER     280
-*/
 
 int yywrap() {
     running = 0;
