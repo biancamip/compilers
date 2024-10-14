@@ -1,10 +1,5 @@
 /* Bianca Pelegrini - 279598 */
 
-/* TODO
-- Get the lines counting scheme figured out
-- Handle identifiers
-*/
-
 %{
     #include <stdio.h>
     #include <string>
@@ -77,8 +72,10 @@
 
 "//"                                { temp(yytext); BEGIN(LINE_COMMENT); }
 "/*"                                { temp(yytext); BEGIN(BLOCK_COMMENT); }
+
 <LINE_COMMENT>.                     { temp(yytext); }
 <LINE_COMMENT>"\n"                  { temp(yytext); lines++; BEGIN(INITIAL); }
+
 <BLOCK_COMMENT>.                    { temp(yytext); }
 <BLOCK_COMMENT>"\n"                 { temp(yytext); lines++; }
 <BLOCK_COMMENT>"*/"                 { temp(yytext); BEGIN(INITIAL); }

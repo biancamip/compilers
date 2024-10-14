@@ -10,8 +10,7 @@ with more than one line
 okay bye */
 'b'
 
-"This is a pretty long string with a quotation mark \", which should not close the string, but be escaped. There's also a new line, right around
-here :)"
+"This is a pretty long string, that features a quotation mark \" which should not close the string, but be escaped instead."
 
 // and for my next trick, I'll add an identifier followed by an int literal. Behold!
 anIdentifier #8;

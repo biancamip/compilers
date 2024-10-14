@@ -28,7 +28,7 @@ int main(int argc, char **argv)
     while (isRunning())
     {
         token = yylex();
-        printf("TOKEN %d %s\n", token, yytext);
+        // printf("TOKEN %d %s\n", token, yytext);
     }
 
     printf("\nTotal lines: %d\n", getLineNumber());
