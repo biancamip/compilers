@@ -1,4 +1,6 @@
-// this is a one-line comment
+// this is a one-line comment. below this there are some newlines and a bunch of tabs and spaces
+       
+( )
 
 "someString";
 (#2048)	;
@@ -7,3 +9,9 @@
 with more than one line
 okay bye */
 'b'
+
+"This is a pretty long string with a quotation mark \", which should not close the string, but be escaped. There's also a new line, right
+here :)"
+
+// and for my next trick, I'll add an identifier followed by an int literal. Behold!
+anIdentifier 8;

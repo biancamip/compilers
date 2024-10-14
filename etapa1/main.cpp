@@ -31,7 +31,7 @@ int main(int argc, char **argv)
         printf("TOKEN %d %s\n", token, yytext);
     }
 
-    printf("Total lines: %d\n", getLineNumber());
+    printf("\nTotal lines: %d\n", getLineNumber());
 
     printf("Symbols table:\n");
     printSymbolsTable();

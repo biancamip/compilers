@@ -2,7 +2,7 @@
 
 /* TODO
 - Get the lines counting scheme figured out
-- Analyze literals and identifiers
+- Handle identifiers
 */
 
 %{
@@ -44,43 +44,46 @@
         symbolsTable.insert(std::make_pair(value, symbolType));
         return;
     }
+
+    void temp(char* token) {
+        printf("line: %d; token %s\n", lines, token);
+    }
 %}
 
 %x LINE_COMMENT BLOCK_COMMENT
 
 %%
 
-"char"                              { return KW_CHAR; }
-"int"                               { return KW_INT; }
-"if'"                               { return KW_IF; }
-"then"                              { return KW_THEN; }
-"else"                              { return KW_ELSE; }
-"while"                             { return KW_WHILE; }
-"read"                              { return KW_READ; }
-"print"                             { return KW_PRINT; }
-"return"                            { return KW_RETURN; }
+"char"                              { temp(yytext); return KW_CHAR; }
+"int"                               { temp(yytext); return KW_INT; }
+"if"                                { temp(yytext); return KW_IF; }
+"then"                              { temp(yytext); return KW_THEN; }
+"else"                              { temp(yytext); return KW_ELSE; }
+"while"                             { temp(yytext); return KW_WHILE; }
+"read"                              { temp(yytext); return KW_READ; }
+"print"                             { temp(yytext); return KW_PRINT; }
+"return"                            { temp(yytext); return KW_RETURN; }
 
-"\n"                                { ++lines; }
-" "|\t|\r|\f|\v                     { }
+"\n"                                { lines++; }
+" "|\t|\r|\f|\v                     { /* skip any whitespaces except new line */}
 
-"#"[0-9]+                           {insertSymbol(yytext, ENTRY_LIT_INT); return LIT_INT;}
-"'"."'"                             {insertSymbol(yytext, ENTRY_LIT_CHAR); return LIT_CHAR;}
-\"[^\"]*\"                          {insertSymbol(yytext, ENTRY_LIT_STRING); return LIT_STRING;}
+"#"[0-9]+                           { insertSymbol(yytext, ENTRY_LIT_INT); temp(yytext); return LIT_INT; }
+"'"."'"                             { insertSymbol(yytext, ENTRY_LIT_CHAR); temp(yytext); return LIT_CHAR; }
+\"([^"\\]|\\.)*\"                   { insertSymbol(yytext, ENTRY_LIT_STRING); temp(yytext); return LIT_STRING; }
 
-\,|\;|\:|\(|\)|\[|\]\{|\}           { return yytext[0]; }
-\=|\+|\-|\*|\/|\%|\<|\>|\&|\||\~    { return yytext[0]; }
+
+\,|\;|\:|\(|\)|\[|\]\{|\}           { temp(yytext); return yytext[0]; }
+\=|\+|\-|\*|\/|\%|\<|\>|\&|\||\~    { temp(yytext); return yytext[0]; }
 
 "//"                                { BEGIN(LINE_COMMENT); }
 "/*"                                { BEGIN(BLOCK_COMMENT); }
-
 <LINE_COMMENT>.                     { }
-<LINE_COMMENT>"\n"                  { ++lines; BEGIN(INITIAL); }
-
+<LINE_COMMENT>"\n"                  { lines++; BEGIN(INITIAL); }
 <BLOCK_COMMENT>.                    { }
-<BLOCK_COMMENT>"\n"                 { ++lines; }
+<BLOCK_COMMENT>"\n"                 { lines++; }
 <BLOCK_COMMENT>"*/"                 { BEGIN(INITIAL); }
 
-.                                   { return TOKEN_ERROR; }
+.                                   { temp(yytext); return TOKEN_ERROR; }
 
 %%
 /*
