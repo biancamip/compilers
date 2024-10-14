@@ -1,4 +1,4 @@
-// Bianca Pelegrini - 279598
+// Bianca M Pelegrini - 279598
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -28,7 +28,7 @@ int main(int argc, char **argv)
     while (isRunning())
     {
         token = yylex();
-        // printf("TOKEN %d %s\n", token, yytext);
+        printf("TOKEN %d %s\n", token, yytext);
     }
 
     printf("\nTotal lines: %d\n", getLineNumber());

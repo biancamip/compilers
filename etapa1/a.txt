@@ -1,3 +1,4 @@
+// Bianca M Pelegrini - 279598
 // this is a one-line comment. below this there are some newlines and a bunch of tabs and spaces
        
 ( )
@@ -6,11 +7,16 @@
 (#2048)	;
 
 /* this is a block comment
-with more than one line
+with more than one line * and an asterisk and other funky stuff like this \o/
 okay bye */
 'b'
 
-"This is a pretty long string, that features a quotation mark \" which should not close the string, but be escaped instead."
+"This is a pretty long string, featuring a quotation mark \" which should not close the string, but be escaped instead."
 
 // and for my next trick, I'll add an identifier followed by an int literal. Behold!
-anIdentifier #8;
+anIdentifier #16;
+
+''
+#
+#"8"
+#()

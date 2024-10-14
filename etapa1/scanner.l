@@ -1,4 +1,4 @@
-/* Bianca Pelegrini - 279598 */
+/* Bianca M Pelegrini - 279598 */
 
 %{
     #include <stdio.h>
@@ -10,6 +10,8 @@
     #define ENTRY_LIT_INT 1
     #define ENTRY_LIT_CHAR 2
     #define ENTRY_LIT_STRING 6
+
+    #define YY_NO_UNPUT
     
     int running = 0;
     int lines = 1;
@@ -49,38 +51,38 @@
 
 %%
 
-"char"                              { temp(yytext); return KW_CHAR; }
-"int"                               { temp(yytext); return KW_INT; }
-"if"                                { temp(yytext); return KW_IF; }
-"then"                              { temp(yytext); return KW_THEN; }
-"else"                              { temp(yytext); return KW_ELSE; }
-"while"                             { temp(yytext); return KW_WHILE; }
-"read"                              { temp(yytext); return KW_READ; }
-"print"                             { temp(yytext); return KW_PRINT; }
-"return"                            { temp(yytext); return KW_RETURN; }
+"char"                              { return KW_CHAR; }
+"int"                               { return KW_INT; }
+"if"                                { return KW_IF; }
+"then"                              { return KW_THEN; }
+"else"                              { return KW_ELSE; }
+"while"                             { return KW_WHILE; }
+"read"                              { return KW_READ; }
+"print"                             { return KW_PRINT; }
+"return"                            { return KW_RETURN; }
 
-"#"[0-9]+                           { temp(yytext); insertSymbol(yytext, ENTRY_LIT_INT); return LIT_INT; }
-"'"."'"                             { temp(yytext); insertSymbol(yytext, ENTRY_LIT_CHAR); return LIT_CHAR; }
-\"([^"\\]|\\.)*\"                   { temp(yytext); insertSymbol(yytext, ENTRY_LIT_STRING); return LIT_STRING; }
-[a-zA-Z0-9]+                        { temp(yytext); insertSymbol(yytext, ENTRY_IDENTIFIER); return TK_IDENTIFIER; }
+"#"[0-9]+                           { insertSymbol(yytext, ENTRY_LIT_INT); return LIT_INT; }
+"'"."'"                             { insertSymbol(yytext, ENTRY_LIT_CHAR); return LIT_CHAR; }
+\"([^"\\]|\\.)*\"                   { insertSymbol(yytext, ENTRY_LIT_STRING); return LIT_STRING; }
+[a-zA-Z0-9]+                        { insertSymbol(yytext, ENTRY_IDENTIFIER); return TK_IDENTIFIER; }
 
-\,|\;|\:|\(|\)|\[|\]\{|\}           { temp(yytext); return yytext[0]; }
-\=|\+|\-|\*|\/|\%|\<|\>|\&|\||\~    { temp(yytext); return yytext[0]; }
+\,|\;|\:|\(|\)|\[|\]\{|\}           { return yytext[0]; }
+\=|\+|\-|\*|\/|\%|\<|\>|\&|\||\~    { return yytext[0]; }
 
-"\n"                                { temp(yytext); lines++; }
-" "|\t|\r|\f|\v                     { temp(yytext); /* skip any whitespaces BUT new line */}
+"\n"                                { lines++; }
+" "|\t|\r|\f|\v                     { /* skip any whitespaces BUT new line */}
 
-"//"                                { temp(yytext); BEGIN(LINE_COMMENT); }
-"/*"                                { temp(yytext); BEGIN(BLOCK_COMMENT); }
+"//"                                { BEGIN(LINE_COMMENT); }
+"/*"                                { BEGIN(BLOCK_COMMENT); }
 
-<LINE_COMMENT>.                     { temp(yytext); }
-<LINE_COMMENT>"\n"                  { temp(yytext); lines++; BEGIN(INITIAL); }
+<LINE_COMMENT>.+                    { }
+<LINE_COMMENT>"\n"                  { lines++; BEGIN(INITIAL); }
 
-<BLOCK_COMMENT>.                    { temp(yytext); }
-<BLOCK_COMMENT>"\n"                 { temp(yytext); lines++; }
-<BLOCK_COMMENT>"*/"                 { temp(yytext); BEGIN(INITIAL); }
+<BLOCK_COMMENT>.                    { }
+<BLOCK_COMMENT>"\n"                 { lines++; }
+<BLOCK_COMMENT>"*/"                 { BEGIN(INITIAL); }
 
-.                                   { temp(yytext); return TOKEN_ERROR; }
+.                                   { return TOKEN_ERROR; }
 
 %%
 
