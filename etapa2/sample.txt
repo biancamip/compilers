@@ -1,0 +1,59 @@
+// UFRGS - Compiladores - Marcelo Johann - 2024/2 - Draft
+
+char a = #15;
+char c = 'x';
+char 7 = #100;
+int number = 'A';
+int 1 = #1;
+int v[#10] = 'a' #0'b'#0 #0 #0 #0 #0 #0 #0;
+int matrix[#100]; 
+
+/**
+Este eh um comentario 
+de multiplas 
+linhas
+**/
+
+int main ()
+  {
+  number = 0;
+  7 = 7 - 1;
+  7 = #5;
+  v[7] = #55;
+  print v[#5] 7 c;
+  1 = #2;
+
+  print "Digite um numero: \n";
+  read 7;
+
+  while (i<#10)
+    {
+    1 = incn(1,#1);
+    7 = incn(7,7);
+    }
+
+  print "Dobrando algumas vezes 7 fica " 7 "\n";
+
+  if (a=#15) then
+    {
+    a = a + #1;
+    print "A era=#15\n";
+    };
+    
+  if (1=#100) then
+    {
+    print "Nao tem como isso...\n";
+    }
+  else
+    print "OK!\n"; 
+  {{}} {}
+  }
+
+int incn (int x, int n )
+  {
+  return x + n;
+  }
+
+// end of file
+  
+
