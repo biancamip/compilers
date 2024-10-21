@@ -36,3 +36,5 @@
 
 # Project-specific generated files
 */etapa1
+
+*.DS_Store
