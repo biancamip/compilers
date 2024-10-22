@@ -4,12 +4,10 @@
     #include <stdio.h>
     #include <string>
     #include <map>
-    #include "tokens.h"
 
-    #define ENTRY_IDENTIFIER 0
-    #define ENTRY_LIT_INT 1
-    #define ENTRY_LIT_CHAR 2
-    #define ENTRY_LIT_STRING 6
+    #define SYMBOL_LIT_INT 1
+    #define SYMBOL_LIT_CHAR 2
+    #define SYMBOL_IDENTIFIER 7
 
     #define YY_NO_UNPUT
     
