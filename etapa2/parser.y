@@ -39,8 +39,8 @@ program:
 
 var_def:
     var_type TOKEN_IDENTIFIER '=' literal ';'
-    | var_type array '=' literal_list ';'
-    | var_type array ';'
+    | var_type TOKEN_IDENTIFIER '[' LIT_INT ']' '=' literal_list ';'
+    | var_type TOKEN_IDENTIFIER '[' LIT_INT ']' ';'
     ;
 
 var_type:
@@ -50,13 +50,7 @@ var_type:
 
 literal:
 	LIT_INT
-	| LIT_STRING
 	| LIT_CHAR
-	;
-
-array:
-	TOKEN_IDENTIFIER '[' LIT_INT ']'
-	| TOKEN_IDENTIFIER '[' TOKEN_IDENTIFIER ']'
 	;
 
 literal_list:
@@ -65,27 +59,42 @@ literal_list:
     ;
 
 func:
-	var_type TOKEN_IDENTIFIER '(' func_params_list ')' cmd
+	var_type TOKEN_IDENTIFIER '(' func_params_list ')' cmd_block
+	| var_type TOKEN_IDENTIFIER '(' ')' cmd_block
 	;
 
 func_params_list:
     var_type TOKEN_IDENTIFIER ',' func_params_list
     | var_type TOKEN_IDENTIFIER
-    |
     ;
 
 cmd:
-    attribution
+	cmd_single
+	| cmd_block
+	;
+
+cmd_single:
+    attribution ';'
     | flow_ctrl
-    | cmd_block
-    | KW_RETURN expr
-    | KW_PRINT print_args_list
-    | KW_READ TOKEN_IDENTIFIER
-    |
+    | KW_RETURN expr ';'
+    | KW_PRINT print_args_list ';'
+    | KW_READ TOKEN_IDENTIFIER ';'
+	| ';'
     ;
 
+cmd_block:
+	'{' cmd_list '}'
+	| '{' cmd_block '}'
+	| '{' '}'
+	;
+
+cmd_list:
+	cmd_single cmd_list
+	| cmd_single
+	;
+
 attribution:
-	array '=' expr
+	TOKEN_IDENTIFIER '[' expr ']' '=' expr
 	| TOKEN_IDENTIFIER '=' expr
 	;
 
@@ -95,19 +104,10 @@ flow_ctrl:
     | KW_WHILE '(' expr ')' cmd
     ;
 
-cmd_block:
-	'{' cmd_list '}'
-	;
-
-cmd_list:
-	cmd ';' cmd_list
-	|
-	;
-
 expr:
 	TOKEN_IDENTIFIER
 	| literal
-	| array
+	| TOKEN_IDENTIFIER '[' expr ']'
 	| expr '+' expr
 	| expr '-' expr
 	| expr '*' expr
@@ -118,19 +118,20 @@ expr:
     | expr '&' expr
     | expr '|' expr
     | '~' expr
-	| TOKEN_IDENTIFIER '(' args_list ')'
+	| TOKEN_IDENTIFIER '(' func_args_list ')'
 	| '(' expr ')'
-	|
 	;
 
-args_list:
-    expr ',' args_list
+func_args_list:
+    expr ',' func_args_list
     | expr
     ;
 
 print_args_list:
-    expr ' ' print_args_list
+    expr print_args_list
+	| LIT_STRING print_args_list
     | expr
+	| LIT_STRING
     ;
 
 %%
