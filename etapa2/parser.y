@@ -55,12 +55,12 @@ literal:
 	;
 
 array:
-	TOKEN_IDENTIFIER '[' expr ']' /* TODO how to specify positive integer as array size? */
+	TOKEN_IDENTIFIER '[' LIT_INT ']'
 	;
 
 literal_list:
-    literal ' ' literal_list
-    | literal
+    literal
+    | literal literal_list
     ;
 
 func:
@@ -70,6 +70,7 @@ func:
 func_params_list:
     var_type TOKEN_IDENTIFIER ',' func_params_list
     | var_type TOKEN_IDENTIFIER
+    |
     ;
 
 cmd:
@@ -134,6 +135,6 @@ print_args_list:
 %%
 
 int yyerror(char *error_msg){
-	fprintf(stderr,"Syntax error in line %d: %s\n", getLineNumber(), error_msg);
+	fprintf(stderr,"Error in line %d: %s\n", getLineNumber(), error_msg);
 	exit(3);
 }

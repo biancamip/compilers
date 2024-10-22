@@ -1,3 +1,5 @@
+/* Bianca M Pelegrini - 279598 */
+
 #ifndef TABLE_H
 #define TABLE_H
 
