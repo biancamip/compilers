@@ -1,22 +1,14 @@
 /* Bianca M Pelegrini - 279598 */
 
 %{
+    #include "table.h"
 	#include <stdio.h>
 	#include <stdlib.h>
 
 	int yylex();
 	int yyerror(char *msg);
 	int getLineNumber();
-
-    #define SYMBOL_LIT_INT 1
-    #define SYMBOL_LIT_CHAR 2
-    #define SYMBOL_LIT_STRING 6
-    #define SYMBOL_IDENTIFIER 7
-
-    typedef struct table_entry {
-        int entry_type;
-        char* value;
-    } table_entry;
+    struct table_entry;
 %}
 
 
@@ -136,9 +128,7 @@ args_list:
 
 print_args_list:
     expr ' ' print_args_list
-    | LIT_STRING ' ' print_args_list
     | expr
-    | LIT_STRING
     ;
 
 %%

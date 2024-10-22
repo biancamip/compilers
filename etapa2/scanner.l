@@ -1,13 +1,20 @@
 /* Bianca M Pelegrini - 279598 */
 
 %{
+    #include "table.h"
     #include <stdio.h>
     #include <string>
     #include <map>
     #include "parser.tab.h"
 
+    #define SYMBOL_LIT_INT 1
+    #define SYMBOL_LIT_CHAR 2
+    #define SYMBOL_LIT_STRING 6
+    #define SYMBOL_IDENTIFIER 7
+
     #define YY_NO_UNPUT
-    
+
+    struct table_entry;
     int running = 0;
     int lines = 1;
     std::map<std::string, table_entry> symbolsTable;
@@ -27,15 +34,16 @@
     }
 
     void insertSymbol(std::string symbolValue, int symbolType) {
-        table_entry symbolEntry = { symbolType, symbolValue };
-        symbolsTable.insert(symbolEntry);
+        char* mutableSymbolValue = strdup(symbolValue.c_str());
+        table_entry symbolEntry = { symbolType, mutableSymbolValue };
+        symbolsTable[symbolValue] = symbolEntry;
         return;
     }
 
     // Helper functions for debugging purposes
     void printSymbolsTable() {
         for (auto it = symbolsTable.begin(); it != symbolsTable.end(); ++it) {
-            printf("%s => %d\n", it->first.c_str(), it->second);
+            printf("%s => { value_str: %s, entry_type: %d }\n", it->first.c_str(), it->second.value_str, it->second.entry_type);
         }
     }
 
@@ -61,7 +69,7 @@
 "#"[0-9]+                           { insertSymbol(yytext, SYMBOL_LIT_INT); return LIT_INT; }
 "'"."'"                             { insertSymbol(yytext, SYMBOL_LIT_CHAR); return LIT_CHAR; }
 \"([^"\\]|\\.)*\"                   { insertSymbol(yytext, SYMBOL_LIT_STRING); return LIT_STRING; }
-[a-zA-Z0-9]+                        { insertSymbol(yytext, SYMBOL_IDENTIFIER); return TK_IDENTIFIER; }
+[a-zA-Z0-9]+                        { insertSymbol(yytext, SYMBOL_IDENTIFIER); return TOKEN_IDENTIFIER; }
 
 \,|\;|\:|\(|\)|\[|\]|\{|\}          { return yytext[0]; }
 \=|\+|\-|\*|\/|\%|\<|\>|\&|\||\~    { return yytext[0]; }
