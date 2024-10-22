@@ -32,12 +32,12 @@
 %%
 
 program:
-    var program
+    var_def program
     | func program
 	|
 	;
 
-var:
+var_def:
     var_type TOKEN_IDENTIFIER '=' literal ';'
     | var_type array '=' literal_list ';'
     | var_type array ';'
@@ -56,6 +56,7 @@ literal:
 
 array:
 	TOKEN_IDENTIFIER '[' LIT_INT ']'
+	| TOKEN_IDENTIFIER '[' TOKEN_IDENTIFIER ']'
 	;
 
 literal_list:

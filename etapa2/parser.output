@@ -3,9 +3,7 @@ Terminals unused in grammar
     TOKEN_ERROR
 
 
-State 65 conflicts: 9 shift/reduce
-State 85 conflicts: 9 shift/reduce
-State 86 conflicts: 9 shift/reduce
+State 67 conflicts: 9 shift/reduce
 State 87 conflicts: 9 shift/reduce
 State 88 conflicts: 9 shift/reduce
 State 89 conflicts: 9 shift/reduce
@@ -13,20 +11,22 @@ State 90 conflicts: 9 shift/reduce
 State 91 conflicts: 9 shift/reduce
 State 92 conflicts: 9 shift/reduce
 State 93 conflicts: 9 shift/reduce
-State 100 conflicts: 1 shift/reduce
+State 94 conflicts: 9 shift/reduce
+State 95 conflicts: 9 shift/reduce
+State 102 conflicts: 1 shift/reduce
 
 
 Grammar
 
     0 $accept: program $end
 
-    1 program: var program
+    1 program: var_def program
     2        | func program
     3        | ε
 
-    4 var: var_type TOKEN_IDENTIFIER '=' literal ';'
-    5    | var_type array '=' literal_list ';'
-    6    | var_type array ';'
+    4 var_def: var_type TOKEN_IDENTIFIER '=' literal ';'
+    5        | var_type array '=' literal_list ';'
+    6        | var_type array ';'
 
     7 var_type: KW_INT
     8         | KW_CHAR
@@ -36,94 +36,95 @@ Grammar
    11        | LIT_CHAR
 
    12 array: TOKEN_IDENTIFIER '[' LIT_INT ']'
+   13      | TOKEN_IDENTIFIER '[' TOKEN_IDENTIFIER ']'
 
-   13 literal_list: literal
-   14             | literal literal_list
+   14 literal_list: literal
+   15             | literal literal_list
 
-   15 func: var_type TOKEN_IDENTIFIER '(' func_params_list ')' cmd
+   16 func: var_type TOKEN_IDENTIFIER '(' func_params_list ')' cmd
 
-   16 func_params_list: var_type TOKEN_IDENTIFIER ',' func_params_list
-   17                 | var_type TOKEN_IDENTIFIER
-   18                 | ε
+   17 func_params_list: var_type TOKEN_IDENTIFIER ',' func_params_list
+   18                 | var_type TOKEN_IDENTIFIER
+   19                 | ε
 
-   19 cmd: attribution
-   20    | flow_ctrl
-   21    | cmd_block
-   22    | KW_RETURN expr
-   23    | KW_PRINT print_args_list
-   24    | KW_READ TOKEN_IDENTIFIER
-   25    | ε
+   20 cmd: attribution
+   21    | flow_ctrl
+   22    | cmd_block
+   23    | KW_RETURN expr
+   24    | KW_PRINT print_args_list
+   25    | KW_READ TOKEN_IDENTIFIER
+   26    | ε
 
-   26 attribution: array '=' expr
-   27            | TOKEN_IDENTIFIER '=' expr
+   27 attribution: array '=' expr
+   28            | TOKEN_IDENTIFIER '=' expr
 
-   28 flow_ctrl: KW_IF '(' expr ')' KW_THEN cmd
-   29          | KW_IF '(' expr ')' KW_THEN cmd KW_ELSE cmd
-   30          | KW_WHILE '(' expr ')' cmd
+   29 flow_ctrl: KW_IF '(' expr ')' KW_THEN cmd
+   30          | KW_IF '(' expr ')' KW_THEN cmd KW_ELSE cmd
+   31          | KW_WHILE '(' expr ')' cmd
 
-   31 cmd_block: '{' cmd_list '}'
+   32 cmd_block: '{' cmd_list '}'
 
-   32 cmd_list: cmd ';' cmd_list
-   33         | ε
+   33 cmd_list: cmd ';' cmd_list
+   34         | ε
 
-   34 expr: TOKEN_IDENTIFIER
-   35     | literal
-   36     | array
-   37     | expr '+' expr
-   38     | expr '-' expr
-   39     | expr '*' expr
-   40     | expr '/' expr
-   41     | expr '<' expr
-   42     | expr '>' expr
-   43     | expr '=' expr
-   44     | expr '&' expr
-   45     | expr '|' expr
-   46     | '~' expr
-   47     | TOKEN_IDENTIFIER '(' args_list ')'
-   48     | '(' expr ')'
-   49     | ε
+   35 expr: TOKEN_IDENTIFIER
+   36     | literal
+   37     | array
+   38     | expr '+' expr
+   39     | expr '-' expr
+   40     | expr '*' expr
+   41     | expr '/' expr
+   42     | expr '<' expr
+   43     | expr '>' expr
+   44     | expr '=' expr
+   45     | expr '&' expr
+   46     | expr '|' expr
+   47     | '~' expr
+   48     | TOKEN_IDENTIFIER '(' args_list ')'
+   49     | '(' expr ')'
+   50     | ε
 
-   50 args_list: expr ',' args_list
-   51          | expr
+   51 args_list: expr ',' args_list
+   52          | expr
 
-   52 print_args_list: expr ' ' print_args_list
-   53                | expr
+   53 print_args_list: expr ' ' print_args_list
+   54                | expr
 
 
 Terminals, with rules where they appear
 
     $end (0) 0
-    ' ' (32) 52
-    '&' (38) 44
-    '(' (40) 15 28 29 30 47 48
-    ')' (41) 15 28 29 30 47 48
-    '*' (42) 39
-    '+' (43) 37
-    ',' (44) 16 50
-    '-' (45) 38
-    '/' (47) 40
-    ';' (59) 4 5 6 32
-    '<' (60) 41
-    '=' (61) 4 5 26 27 43
-    '>' (62) 42
-    '[' (91) 12
-    ']' (93) 12
-    '{' (123) 31
-    '|' (124) 45
-    '}' (125) 31
-    '~' (126) 46
+    ' ' (32) 53
+    '&' (38) 45
+    '(' (40) 16 29 30 31 48 49
+    ')' (41) 16 29 30 31 48 49
+    '*' (42) 40
+    '+' (43) 38
+    ',' (44) 17 51
+    '-' (45) 39
+    '/' (47) 41
+    ';' (59) 4 5 6 33
+    '<' (60) 42
+    '=' (61) 4 5 27 28 44
+    '>' (62) 43
+    '[' (91) 12 13
+    ']' (93) 12 13
+    '{' (123) 32
+    '|' (124) 46
+    '}' (125) 32
+    '~' (126) 47
     error (256)
     KW_CHAR (258) 8
     KW_INT (259) 7
-    KW_IF (260) 28 29
-    KW_THEN (261) 28 29
-    KW_ELSE (262) 29
-    KW_WHILE (263) 30
-    KW_READ (264) 24
-    KW_PRINT (265) 23
-    KW_RETURN (266) 22
+    KW_IF (260) 29 30
+    KW_THEN (261) 29 30
+    KW_ELSE (262) 30
+    KW_WHILE (263) 31
+    KW_READ (264) 25
+    KW_PRINT (265) 24
+    KW_RETURN (266) 23
     TOKEN_ERROR (267)
-    TOKEN_IDENTIFIER <symbol> (268) 4 12 15 16 17 24 27 34 47
+    TOKEN_IDENTIFIER <symbol> (268) 4 12 13 16 17 18 25 28 35 48
     LIT_INT <symbol> (269) 9 12
     LIT_CHAR <symbol> (270) 11
     LIT_STRING <symbol> (271) 10
@@ -136,51 +137,51 @@ Nonterminals, with rules where they appear
     program (37)
         on left: 1 2 3
         on right: 0 1 2
-    var (38)
+    var_def (38)
         on left: 4 5 6
         on right: 1
     var_type (39)
         on left: 7 8
-        on right: 4 5 6 15 16 17
+        on right: 4 5 6 16 17 18
     literal (40)
         on left: 9 10 11
-        on right: 4 13 14 35
+        on right: 4 14 15 36
     array (41)
-        on left: 12
-        on right: 5 6 26 36
+        on left: 12 13
+        on right: 5 6 27 37
     literal_list (42)
-        on left: 13 14
-        on right: 5 14
+        on left: 14 15
+        on right: 5 15
     func (43)
-        on left: 15
+        on left: 16
         on right: 2
     func_params_list (44)
-        on left: 16 17 18
-        on right: 15 16
+        on left: 17 18 19
+        on right: 16 17
     cmd (45)
-        on left: 19 20 21 22 23 24 25
-        on right: 15 28 29 30 32
+        on left: 20 21 22 23 24 25 26
+        on right: 16 29 30 31 33
     attribution (46)
-        on left: 26 27
-        on right: 19
-    flow_ctrl (47)
-        on left: 28 29 30
+        on left: 27 28
         on right: 20
-    cmd_block (48)
-        on left: 31
+    flow_ctrl (47)
+        on left: 29 30 31
         on right: 21
+    cmd_block (48)
+        on left: 32
+        on right: 22
     cmd_list (49)
-        on left: 32 33
-        on right: 31 32
+        on left: 33 34
+        on right: 32 33
     expr (50)
-        on left: 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48 49
-        on right: 22 26 27 28 29 30 37 38 39 40 41 42 43 44 45 46 48 50 51 52 53
+        on left: 35 36 37 38 39 40 41 42 43 44 45 46 47 48 49 50
+        on right: 23 27 28 29 30 31 38 39 40 41 42 43 44 45 46 47 49 51 52 53 54
     args_list (51)
-        on left: 50 51
-        on right: 47 50
+        on left: 51 52
+        on right: 48 51
     print_args_list (52)
-        on left: 52 53
-        on right: 23 52
+        on left: 53 54
+        on right: 24 53
 
 
 State 0
@@ -193,7 +194,7 @@ State 0
     $default  reduce using rule 3 (program)
 
     program   go to state 3
-    var       go to state 4
+    var_def   go to state 4
     var_type  go to state 5
     func      go to state 6
 
@@ -221,7 +222,7 @@ State 3
 
 State 4
 
-    1 program: var • program
+    1 program: var_def • program
 
     KW_CHAR  shift, and go to state 1
     KW_INT   shift, and go to state 2
@@ -229,17 +230,17 @@ State 4
     $default  reduce using rule 3 (program)
 
     program   go to state 8
-    var       go to state 4
+    var_def   go to state 4
     var_type  go to state 5
     func      go to state 6
 
 
 State 5
 
-    4 var: var_type • TOKEN_IDENTIFIER '=' literal ';'
-    5    | var_type • array '=' literal_list ';'
-    6    | var_type • array ';'
-   15 func: var_type • TOKEN_IDENTIFIER '(' func_params_list ')' cmd
+    4 var_def: var_type • TOKEN_IDENTIFIER '=' literal ';'
+    5        | var_type • array '=' literal_list ';'
+    6        | var_type • array ';'
+   16 func: var_type • TOKEN_IDENTIFIER '(' func_params_list ')' cmd
 
     TOKEN_IDENTIFIER  shift, and go to state 9
 
@@ -256,7 +257,7 @@ State 6
     $default  reduce using rule 3 (program)
 
     program   go to state 11
-    var       go to state 4
+    var_def   go to state 4
     var_type  go to state 5
     func      go to state 6
 
@@ -270,16 +271,17 @@ State 7
 
 State 8
 
-    1 program: var program •
+    1 program: var_def program •
 
     $default  reduce using rule 1 (program)
 
 
 State 9
 
-    4 var: var_type TOKEN_IDENTIFIER • '=' literal ';'
+    4 var_def: var_type TOKEN_IDENTIFIER • '=' literal ';'
    12 array: TOKEN_IDENTIFIER • '[' LIT_INT ']'
-   15 func: var_type TOKEN_IDENTIFIER • '(' func_params_list ')' cmd
+   13      | TOKEN_IDENTIFIER • '[' TOKEN_IDENTIFIER ']'
+   16 func: var_type TOKEN_IDENTIFIER • '(' func_params_list ')' cmd
 
     '='  shift, and go to state 12
     '['  shift, and go to state 13
@@ -288,8 +290,8 @@ State 9
 
 State 10
 
-    5 var: var_type array • '=' literal_list ';'
-    6    | var_type array • ';'
+    5 var_def: var_type array • '=' literal_list ';'
+    6        | var_type array • ';'
 
     '='  shift, and go to state 15
     ';'  shift, and go to state 16
@@ -304,7 +306,7 @@ State 11
 
 State 12
 
-    4 var: var_type TOKEN_IDENTIFIER '=' • literal ';'
+    4 var_def: var_type TOKEN_IDENTIFIER '=' • literal ';'
 
     LIT_INT     shift, and go to state 17
     LIT_CHAR    shift, and go to state 18
@@ -316,40 +318,42 @@ State 12
 State 13
 
    12 array: TOKEN_IDENTIFIER '[' • LIT_INT ']'
+   13      | TOKEN_IDENTIFIER '[' • TOKEN_IDENTIFIER ']'
 
-    LIT_INT  shift, and go to state 21
+    TOKEN_IDENTIFIER  shift, and go to state 21
+    LIT_INT           shift, and go to state 22
 
 
 State 14
 
-   15 func: var_type TOKEN_IDENTIFIER '(' • func_params_list ')' cmd
+   16 func: var_type TOKEN_IDENTIFIER '(' • func_params_list ')' cmd
 
     KW_CHAR  shift, and go to state 1
     KW_INT   shift, and go to state 2
 
-    $default  reduce using rule 18 (func_params_list)
+    $default  reduce using rule 19 (func_params_list)
 
-    var_type          go to state 22
-    func_params_list  go to state 23
+    var_type          go to state 23
+    func_params_list  go to state 24
 
 
 State 15
 
-    5 var: var_type array '=' • literal_list ';'
+    5 var_def: var_type array '=' • literal_list ';'
 
     LIT_INT     shift, and go to state 17
     LIT_CHAR    shift, and go to state 18
     LIT_STRING  shift, and go to state 19
 
-    literal       go to state 24
-    literal_list  go to state 25
+    literal       go to state 25
+    literal_list  go to state 26
 
 
 State 16
 
-    6 var: var_type array ';' •
+    6 var_def: var_type array ';' •
 
-    $default  reduce using rule 6 (var)
+    $default  reduce using rule 6 (var_def)
 
 
 State 17
@@ -375,1208 +379,979 @@ State 19
 
 State 20
 
-    4 var: var_type TOKEN_IDENTIFIER '=' literal • ';'
+    4 var_def: var_type TOKEN_IDENTIFIER '=' literal • ';'
 
-    ';'  shift, and go to state 26
+    ';'  shift, and go to state 27
 
 
 State 21
 
-   12 array: TOKEN_IDENTIFIER '[' LIT_INT • ']'
+   13 array: TOKEN_IDENTIFIER '[' TOKEN_IDENTIFIER • ']'
 
-    ']'  shift, and go to state 27
+    ']'  shift, and go to state 28
 
 
 State 22
 
-   16 func_params_list: var_type • TOKEN_IDENTIFIER ',' func_params_list
-   17                 | var_type • TOKEN_IDENTIFIER
+   12 array: TOKEN_IDENTIFIER '[' LIT_INT • ']'
 
-    TOKEN_IDENTIFIER  shift, and go to state 28
+    ']'  shift, and go to state 29
 
 
 State 23
 
-   15 func: var_type TOKEN_IDENTIFIER '(' func_params_list • ')' cmd
+   17 func_params_list: var_type • TOKEN_IDENTIFIER ',' func_params_list
+   18                 | var_type • TOKEN_IDENTIFIER
 
-    ')'  shift, and go to state 29
+    TOKEN_IDENTIFIER  shift, and go to state 30
 
 
 State 24
 
-   13 literal_list: literal •
-   14             | literal • literal_list
+   16 func: var_type TOKEN_IDENTIFIER '(' func_params_list • ')' cmd
+
+    ')'  shift, and go to state 31
+
+
+State 25
+
+   14 literal_list: literal •
+   15             | literal • literal_list
 
     LIT_INT     shift, and go to state 17
     LIT_CHAR    shift, and go to state 18
     LIT_STRING  shift, and go to state 19
 
-    $default  reduce using rule 13 (literal_list)
+    $default  reduce using rule 14 (literal_list)
 
-    literal       go to state 24
-    literal_list  go to state 30
-
-
-State 25
-
-    5 var: var_type array '=' literal_list • ';'
-
-    ';'  shift, and go to state 31
+    literal       go to state 25
+    literal_list  go to state 32
 
 
 State 26
 
-    4 var: var_type TOKEN_IDENTIFIER '=' literal ';' •
+    5 var_def: var_type array '=' literal_list • ';'
 
-    $default  reduce using rule 4 (var)
+    ';'  shift, and go to state 33
 
 
 State 27
+
+    4 var_def: var_type TOKEN_IDENTIFIER '=' literal ';' •
+
+    $default  reduce using rule 4 (var_def)
+
+
+State 28
+
+   13 array: TOKEN_IDENTIFIER '[' TOKEN_IDENTIFIER ']' •
+
+    $default  reduce using rule 13 (array)
+
+
+State 29
 
    12 array: TOKEN_IDENTIFIER '[' LIT_INT ']' •
 
     $default  reduce using rule 12 (array)
 
 
-State 28
-
-   16 func_params_list: var_type TOKEN_IDENTIFIER • ',' func_params_list
-   17                 | var_type TOKEN_IDENTIFIER •
-
-    ','  shift, and go to state 32
-
-    $default  reduce using rule 17 (func_params_list)
-
-
-State 29
-
-   15 func: var_type TOKEN_IDENTIFIER '(' func_params_list ')' • cmd
-
-    KW_IF             shift, and go to state 33
-    KW_WHILE          shift, and go to state 34
-    KW_READ           shift, and go to state 35
-    KW_PRINT          shift, and go to state 36
-    KW_RETURN         shift, and go to state 37
-    TOKEN_IDENTIFIER  shift, and go to state 38
-    '{'               shift, and go to state 39
-
-    $default  reduce using rule 25 (cmd)
-
-    array        go to state 40
-    cmd          go to state 41
-    attribution  go to state 42
-    flow_ctrl    go to state 43
-    cmd_block    go to state 44
-
-
 State 30
 
-   14 literal_list: literal literal_list •
+   17 func_params_list: var_type TOKEN_IDENTIFIER • ',' func_params_list
+   18                 | var_type TOKEN_IDENTIFIER •
 
-    $default  reduce using rule 14 (literal_list)
+    ','  shift, and go to state 34
+
+    $default  reduce using rule 18 (func_params_list)
 
 
 State 31
 
-    5 var: var_type array '=' literal_list ';' •
+   16 func: var_type TOKEN_IDENTIFIER '(' func_params_list ')' • cmd
 
-    $default  reduce using rule 5 (var)
+    KW_IF             shift, and go to state 35
+    KW_WHILE          shift, and go to state 36
+    KW_READ           shift, and go to state 37
+    KW_PRINT          shift, and go to state 38
+    KW_RETURN         shift, and go to state 39
+    TOKEN_IDENTIFIER  shift, and go to state 40
+    '{'               shift, and go to state 41
+
+    $default  reduce using rule 26 (cmd)
+
+    array        go to state 42
+    cmd          go to state 43
+    attribution  go to state 44
+    flow_ctrl    go to state 45
+    cmd_block    go to state 46
 
 
 State 32
 
-   16 func_params_list: var_type TOKEN_IDENTIFIER ',' • func_params_list
+   15 literal_list: literal literal_list •
 
-    KW_CHAR  shift, and go to state 1
-    KW_INT   shift, and go to state 2
-
-    $default  reduce using rule 18 (func_params_list)
-
-    var_type          go to state 22
-    func_params_list  go to state 45
+    $default  reduce using rule 15 (literal_list)
 
 
 State 33
 
-   28 flow_ctrl: KW_IF • '(' expr ')' KW_THEN cmd
-   29          | KW_IF • '(' expr ')' KW_THEN cmd KW_ELSE cmd
+    5 var_def: var_type array '=' literal_list ';' •
 
-    '('  shift, and go to state 46
+    $default  reduce using rule 5 (var_def)
 
 
 State 34
 
-   30 flow_ctrl: KW_WHILE • '(' expr ')' cmd
+   17 func_params_list: var_type TOKEN_IDENTIFIER ',' • func_params_list
 
-    '('  shift, and go to state 47
+    KW_CHAR  shift, and go to state 1
+    KW_INT   shift, and go to state 2
+
+    $default  reduce using rule 19 (func_params_list)
+
+    var_type          go to state 23
+    func_params_list  go to state 47
 
 
 State 35
 
-   24 cmd: KW_READ • TOKEN_IDENTIFIER
+   29 flow_ctrl: KW_IF • '(' expr ')' KW_THEN cmd
+   30          | KW_IF • '(' expr ')' KW_THEN cmd KW_ELSE cmd
 
-    TOKEN_IDENTIFIER  shift, and go to state 48
+    '('  shift, and go to state 48
 
 
 State 36
 
-   23 cmd: KW_PRINT • print_args_list
+   31 flow_ctrl: KW_WHILE • '(' expr ')' cmd
 
-    TOKEN_IDENTIFIER  shift, and go to state 49
-    LIT_INT           shift, and go to state 17
-    LIT_CHAR          shift, and go to state 18
-    LIT_STRING        shift, and go to state 19
-    '('               shift, and go to state 50
-    '~'               shift, and go to state 51
-
-    $default  reduce using rule 49 (expr)
-
-    literal          go to state 52
-    array            go to state 53
-    expr             go to state 54
-    print_args_list  go to state 55
+    '('  shift, and go to state 49
 
 
 State 37
 
-   22 cmd: KW_RETURN • expr
+   25 cmd: KW_READ • TOKEN_IDENTIFIER
 
-    TOKEN_IDENTIFIER  shift, and go to state 49
-    LIT_INT           shift, and go to state 17
-    LIT_CHAR          shift, and go to state 18
-    LIT_STRING        shift, and go to state 19
-    '('               shift, and go to state 50
-    '~'               shift, and go to state 51
-
-    $default  reduce using rule 49 (expr)
-
-    literal  go to state 52
-    array    go to state 53
-    expr     go to state 56
+    TOKEN_IDENTIFIER  shift, and go to state 50
 
 
 State 38
 
-   12 array: TOKEN_IDENTIFIER • '[' LIT_INT ']'
-   27 attribution: TOKEN_IDENTIFIER • '=' expr
+   24 cmd: KW_PRINT • print_args_list
 
-    '='  shift, and go to state 57
-    '['  shift, and go to state 13
+    TOKEN_IDENTIFIER  shift, and go to state 51
+    LIT_INT           shift, and go to state 17
+    LIT_CHAR          shift, and go to state 18
+    LIT_STRING        shift, and go to state 19
+    '('               shift, and go to state 52
+    '~'               shift, and go to state 53
+
+    $default  reduce using rule 50 (expr)
+
+    literal          go to state 54
+    array            go to state 55
+    expr             go to state 56
+    print_args_list  go to state 57
 
 
 State 39
 
-   31 cmd_block: '{' • cmd_list '}'
+   23 cmd: KW_RETURN • expr
 
-    KW_IF             shift, and go to state 33
-    KW_WHILE          shift, and go to state 34
-    KW_READ           shift, and go to state 35
-    KW_PRINT          shift, and go to state 36
-    KW_RETURN         shift, and go to state 37
-    TOKEN_IDENTIFIER  shift, and go to state 38
-    '{'               shift, and go to state 39
+    TOKEN_IDENTIFIER  shift, and go to state 51
+    LIT_INT           shift, and go to state 17
+    LIT_CHAR          shift, and go to state 18
+    LIT_STRING        shift, and go to state 19
+    '('               shift, and go to state 52
+    '~'               shift, and go to state 53
 
-    '}'       reduce using rule 33 (cmd_list)
-    $default  reduce using rule 25 (cmd)
+    $default  reduce using rule 50 (expr)
 
-    array        go to state 40
-    cmd          go to state 58
-    attribution  go to state 42
-    flow_ctrl    go to state 43
-    cmd_block    go to state 44
-    cmd_list     go to state 59
+    literal  go to state 54
+    array    go to state 55
+    expr     go to state 58
 
 
 State 40
 
-   26 attribution: array • '=' expr
+   12 array: TOKEN_IDENTIFIER • '[' LIT_INT ']'
+   13      | TOKEN_IDENTIFIER • '[' TOKEN_IDENTIFIER ']'
+   28 attribution: TOKEN_IDENTIFIER • '=' expr
 
-    '='  shift, and go to state 60
+    '='  shift, and go to state 59
+    '['  shift, and go to state 13
 
 
 State 41
 
-   15 func: var_type TOKEN_IDENTIFIER '(' func_params_list ')' cmd •
+   32 cmd_block: '{' • cmd_list '}'
 
-    $default  reduce using rule 15 (func)
+    KW_IF             shift, and go to state 35
+    KW_WHILE          shift, and go to state 36
+    KW_READ           shift, and go to state 37
+    KW_PRINT          shift, and go to state 38
+    KW_RETURN         shift, and go to state 39
+    TOKEN_IDENTIFIER  shift, and go to state 40
+    '{'               shift, and go to state 41
+
+    '}'       reduce using rule 34 (cmd_list)
+    $default  reduce using rule 26 (cmd)
+
+    array        go to state 42
+    cmd          go to state 60
+    attribution  go to state 44
+    flow_ctrl    go to state 45
+    cmd_block    go to state 46
+    cmd_list     go to state 61
 
 
 State 42
 
-   19 cmd: attribution •
+   27 attribution: array • '=' expr
 
-    $default  reduce using rule 19 (cmd)
+    '='  shift, and go to state 62
 
 
 State 43
 
-   20 cmd: flow_ctrl •
+   16 func: var_type TOKEN_IDENTIFIER '(' func_params_list ')' cmd •
 
-    $default  reduce using rule 20 (cmd)
+    $default  reduce using rule 16 (func)
 
 
 State 44
 
-   21 cmd: cmd_block •
+   20 cmd: attribution •
 
-    $default  reduce using rule 21 (cmd)
+    $default  reduce using rule 20 (cmd)
 
 
 State 45
 
-   16 func_params_list: var_type TOKEN_IDENTIFIER ',' func_params_list •
+   21 cmd: flow_ctrl •
 
-    $default  reduce using rule 16 (func_params_list)
+    $default  reduce using rule 21 (cmd)
 
 
 State 46
 
-   28 flow_ctrl: KW_IF '(' • expr ')' KW_THEN cmd
-   29          | KW_IF '(' • expr ')' KW_THEN cmd KW_ELSE cmd
-
-    TOKEN_IDENTIFIER  shift, and go to state 49
-    LIT_INT           shift, and go to state 17
-    LIT_CHAR          shift, and go to state 18
-    LIT_STRING        shift, and go to state 19
-    '('               shift, and go to state 50
-    '~'               shift, and go to state 51
-
-    $default  reduce using rule 49 (expr)
-
-    literal  go to state 52
-    array    go to state 53
-    expr     go to state 61
-
-
-State 47
-
-   30 flow_ctrl: KW_WHILE '(' • expr ')' cmd
-
-    TOKEN_IDENTIFIER  shift, and go to state 49
-    LIT_INT           shift, and go to state 17
-    LIT_CHAR          shift, and go to state 18
-    LIT_STRING        shift, and go to state 19
-    '('               shift, and go to state 50
-    '~'               shift, and go to state 51
-
-    $default  reduce using rule 49 (expr)
-
-    literal  go to state 52
-    array    go to state 53
-    expr     go to state 62
-
-
-State 48
-
-   24 cmd: KW_READ TOKEN_IDENTIFIER •
-
-    $default  reduce using rule 24 (cmd)
-
-
-State 49
-
-   12 array: TOKEN_IDENTIFIER • '[' LIT_INT ']'
-   34 expr: TOKEN_IDENTIFIER •
-   47     | TOKEN_IDENTIFIER • '(' args_list ')'
-
-    '['  shift, and go to state 13
-    '('  shift, and go to state 63
-
-    $default  reduce using rule 34 (expr)
-
-
-State 50
-
-   48 expr: '(' • expr ')'
-
-    TOKEN_IDENTIFIER  shift, and go to state 49
-    LIT_INT           shift, and go to state 17
-    LIT_CHAR          shift, and go to state 18
-    LIT_STRING        shift, and go to state 19
-    '('               shift, and go to state 50
-    '~'               shift, and go to state 51
-
-    $default  reduce using rule 49 (expr)
-
-    literal  go to state 52
-    array    go to state 53
-    expr     go to state 64
-
-
-State 51
-
-   46 expr: '~' • expr
-
-    TOKEN_IDENTIFIER  shift, and go to state 49
-    LIT_INT           shift, and go to state 17
-    LIT_CHAR          shift, and go to state 18
-    LIT_STRING        shift, and go to state 19
-    '('               shift, and go to state 50
-    '~'               shift, and go to state 51
-
-    $default  reduce using rule 49 (expr)
-
-    literal  go to state 52
-    array    go to state 53
-    expr     go to state 65
-
-
-State 52
-
-   35 expr: literal •
-
-    $default  reduce using rule 35 (expr)
-
-
-State 53
-
-   36 expr: array •
-
-    $default  reduce using rule 36 (expr)
-
-
-State 54
-
-   37 expr: expr • '+' expr
-   38     | expr • '-' expr
-   39     | expr • '*' expr
-   40     | expr • '/' expr
-   41     | expr • '<' expr
-   42     | expr • '>' expr
-   43     | expr • '=' expr
-   44     | expr • '&' expr
-   45     | expr • '|' expr
-   52 print_args_list: expr • ' ' print_args_list
-   53                | expr •
-
-    '='  shift, and go to state 66
-    '+'  shift, and go to state 67
-    '-'  shift, and go to state 68
-    '*'  shift, and go to state 69
-    '/'  shift, and go to state 70
-    '<'  shift, and go to state 71
-    '>'  shift, and go to state 72
-    '&'  shift, and go to state 73
-    '|'  shift, and go to state 74
-    ' '  shift, and go to state 75
-
-    $default  reduce using rule 53 (print_args_list)
-
-
-State 55
-
-   23 cmd: KW_PRINT print_args_list •
-
-    $default  reduce using rule 23 (cmd)
-
-
-State 56
-
-   22 cmd: KW_RETURN expr •
-   37 expr: expr • '+' expr
-   38     | expr • '-' expr
-   39     | expr • '*' expr
-   40     | expr • '/' expr
-   41     | expr • '<' expr
-   42     | expr • '>' expr
-   43     | expr • '=' expr
-   44     | expr • '&' expr
-   45     | expr • '|' expr
-
-    '='  shift, and go to state 66
-    '+'  shift, and go to state 67
-    '-'  shift, and go to state 68
-    '*'  shift, and go to state 69
-    '/'  shift, and go to state 70
-    '<'  shift, and go to state 71
-    '>'  shift, and go to state 72
-    '&'  shift, and go to state 73
-    '|'  shift, and go to state 74
+   22 cmd: cmd_block •
 
     $default  reduce using rule 22 (cmd)
 
 
-State 57
+State 47
 
-   27 attribution: TOKEN_IDENTIFIER '=' • expr
+   17 func_params_list: var_type TOKEN_IDENTIFIER ',' func_params_list •
 
-    TOKEN_IDENTIFIER  shift, and go to state 49
+    $default  reduce using rule 17 (func_params_list)
+
+
+State 48
+
+   29 flow_ctrl: KW_IF '(' • expr ')' KW_THEN cmd
+   30          | KW_IF '(' • expr ')' KW_THEN cmd KW_ELSE cmd
+
+    TOKEN_IDENTIFIER  shift, and go to state 51
     LIT_INT           shift, and go to state 17
     LIT_CHAR          shift, and go to state 18
     LIT_STRING        shift, and go to state 19
-    '('               shift, and go to state 50
-    '~'               shift, and go to state 51
+    '('               shift, and go to state 52
+    '~'               shift, and go to state 53
 
-    $default  reduce using rule 49 (expr)
+    $default  reduce using rule 50 (expr)
 
-    literal  go to state 52
-    array    go to state 53
-    expr     go to state 76
+    literal  go to state 54
+    array    go to state 55
+    expr     go to state 63
+
+
+State 49
+
+   31 flow_ctrl: KW_WHILE '(' • expr ')' cmd
+
+    TOKEN_IDENTIFIER  shift, and go to state 51
+    LIT_INT           shift, and go to state 17
+    LIT_CHAR          shift, and go to state 18
+    LIT_STRING        shift, and go to state 19
+    '('               shift, and go to state 52
+    '~'               shift, and go to state 53
+
+    $default  reduce using rule 50 (expr)
+
+    literal  go to state 54
+    array    go to state 55
+    expr     go to state 64
+
+
+State 50
+
+   25 cmd: KW_READ TOKEN_IDENTIFIER •
+
+    $default  reduce using rule 25 (cmd)
+
+
+State 51
+
+   12 array: TOKEN_IDENTIFIER • '[' LIT_INT ']'
+   13      | TOKEN_IDENTIFIER • '[' TOKEN_IDENTIFIER ']'
+   35 expr: TOKEN_IDENTIFIER •
+   48     | TOKEN_IDENTIFIER • '(' args_list ')'
+
+    '['  shift, and go to state 13
+    '('  shift, and go to state 65
+
+    $default  reduce using rule 35 (expr)
+
+
+State 52
+
+   49 expr: '(' • expr ')'
+
+    TOKEN_IDENTIFIER  shift, and go to state 51
+    LIT_INT           shift, and go to state 17
+    LIT_CHAR          shift, and go to state 18
+    LIT_STRING        shift, and go to state 19
+    '('               shift, and go to state 52
+    '~'               shift, and go to state 53
+
+    $default  reduce using rule 50 (expr)
+
+    literal  go to state 54
+    array    go to state 55
+    expr     go to state 66
+
+
+State 53
+
+   47 expr: '~' • expr
+
+    TOKEN_IDENTIFIER  shift, and go to state 51
+    LIT_INT           shift, and go to state 17
+    LIT_CHAR          shift, and go to state 18
+    LIT_STRING        shift, and go to state 19
+    '('               shift, and go to state 52
+    '~'               shift, and go to state 53
+
+    $default  reduce using rule 50 (expr)
+
+    literal  go to state 54
+    array    go to state 55
+    expr     go to state 67
+
+
+State 54
+
+   36 expr: literal •
+
+    $default  reduce using rule 36 (expr)
+
+
+State 55
+
+   37 expr: array •
+
+    $default  reduce using rule 37 (expr)
+
+
+State 56
+
+   38 expr: expr • '+' expr
+   39     | expr • '-' expr
+   40     | expr • '*' expr
+   41     | expr • '/' expr
+   42     | expr • '<' expr
+   43     | expr • '>' expr
+   44     | expr • '=' expr
+   45     | expr • '&' expr
+   46     | expr • '|' expr
+   53 print_args_list: expr • ' ' print_args_list
+   54                | expr •
+
+    '='  shift, and go to state 68
+    '+'  shift, and go to state 69
+    '-'  shift, and go to state 70
+    '*'  shift, and go to state 71
+    '/'  shift, and go to state 72
+    '<'  shift, and go to state 73
+    '>'  shift, and go to state 74
+    '&'  shift, and go to state 75
+    '|'  shift, and go to state 76
+    ' '  shift, and go to state 77
+
+    $default  reduce using rule 54 (print_args_list)
+
+
+State 57
+
+   24 cmd: KW_PRINT print_args_list •
+
+    $default  reduce using rule 24 (cmd)
 
 
 State 58
 
-   32 cmd_list: cmd • ';' cmd_list
+   23 cmd: KW_RETURN expr •
+   38 expr: expr • '+' expr
+   39     | expr • '-' expr
+   40     | expr • '*' expr
+   41     | expr • '/' expr
+   42     | expr • '<' expr
+   43     | expr • '>' expr
+   44     | expr • '=' expr
+   45     | expr • '&' expr
+   46     | expr • '|' expr
 
-    ';'  shift, and go to state 77
+    '='  shift, and go to state 68
+    '+'  shift, and go to state 69
+    '-'  shift, and go to state 70
+    '*'  shift, and go to state 71
+    '/'  shift, and go to state 72
+    '<'  shift, and go to state 73
+    '>'  shift, and go to state 74
+    '&'  shift, and go to state 75
+    '|'  shift, and go to state 76
+
+    $default  reduce using rule 23 (cmd)
 
 
 State 59
 
-   31 cmd_block: '{' cmd_list • '}'
+   28 attribution: TOKEN_IDENTIFIER '=' • expr
 
-    '}'  shift, and go to state 78
+    TOKEN_IDENTIFIER  shift, and go to state 51
+    LIT_INT           shift, and go to state 17
+    LIT_CHAR          shift, and go to state 18
+    LIT_STRING        shift, and go to state 19
+    '('               shift, and go to state 52
+    '~'               shift, and go to state 53
+
+    $default  reduce using rule 50 (expr)
+
+    literal  go to state 54
+    array    go to state 55
+    expr     go to state 78
 
 
 State 60
 
-   26 attribution: array '=' • expr
+   33 cmd_list: cmd • ';' cmd_list
 
-    TOKEN_IDENTIFIER  shift, and go to state 49
-    LIT_INT           shift, and go to state 17
-    LIT_CHAR          shift, and go to state 18
-    LIT_STRING        shift, and go to state 19
-    '('               shift, and go to state 50
-    '~'               shift, and go to state 51
-
-    $default  reduce using rule 49 (expr)
-
-    literal  go to state 52
-    array    go to state 53
-    expr     go to state 79
+    ';'  shift, and go to state 79
 
 
 State 61
 
-   28 flow_ctrl: KW_IF '(' expr • ')' KW_THEN cmd
-   29          | KW_IF '(' expr • ')' KW_THEN cmd KW_ELSE cmd
-   37 expr: expr • '+' expr
-   38     | expr • '-' expr
-   39     | expr • '*' expr
-   40     | expr • '/' expr
-   41     | expr • '<' expr
-   42     | expr • '>' expr
-   43     | expr • '=' expr
-   44     | expr • '&' expr
-   45     | expr • '|' expr
+   32 cmd_block: '{' cmd_list • '}'
 
-    '='  shift, and go to state 66
-    ')'  shift, and go to state 80
-    '+'  shift, and go to state 67
-    '-'  shift, and go to state 68
-    '*'  shift, and go to state 69
-    '/'  shift, and go to state 70
-    '<'  shift, and go to state 71
-    '>'  shift, and go to state 72
-    '&'  shift, and go to state 73
-    '|'  shift, and go to state 74
+    '}'  shift, and go to state 80
 
 
 State 62
 
-   30 flow_ctrl: KW_WHILE '(' expr • ')' cmd
-   37 expr: expr • '+' expr
-   38     | expr • '-' expr
-   39     | expr • '*' expr
-   40     | expr • '/' expr
-   41     | expr • '<' expr
-   42     | expr • '>' expr
-   43     | expr • '=' expr
-   44     | expr • '&' expr
-   45     | expr • '|' expr
+   27 attribution: array '=' • expr
 
-    '='  shift, and go to state 66
-    ')'  shift, and go to state 81
-    '+'  shift, and go to state 67
-    '-'  shift, and go to state 68
-    '*'  shift, and go to state 69
-    '/'  shift, and go to state 70
-    '<'  shift, and go to state 71
-    '>'  shift, and go to state 72
-    '&'  shift, and go to state 73
-    '|'  shift, and go to state 74
+    TOKEN_IDENTIFIER  shift, and go to state 51
+    LIT_INT           shift, and go to state 17
+    LIT_CHAR          shift, and go to state 18
+    LIT_STRING        shift, and go to state 19
+    '('               shift, and go to state 52
+    '~'               shift, and go to state 53
+
+    $default  reduce using rule 50 (expr)
+
+    literal  go to state 54
+    array    go to state 55
+    expr     go to state 81
 
 
 State 63
 
-   47 expr: TOKEN_IDENTIFIER '(' • args_list ')'
+   29 flow_ctrl: KW_IF '(' expr • ')' KW_THEN cmd
+   30          | KW_IF '(' expr • ')' KW_THEN cmd KW_ELSE cmd
+   38 expr: expr • '+' expr
+   39     | expr • '-' expr
+   40     | expr • '*' expr
+   41     | expr • '/' expr
+   42     | expr • '<' expr
+   43     | expr • '>' expr
+   44     | expr • '=' expr
+   45     | expr • '&' expr
+   46     | expr • '|' expr
 
-    TOKEN_IDENTIFIER  shift, and go to state 49
-    LIT_INT           shift, and go to state 17
-    LIT_CHAR          shift, and go to state 18
-    LIT_STRING        shift, and go to state 19
-    '('               shift, and go to state 50
-    '~'               shift, and go to state 51
-
-    $default  reduce using rule 49 (expr)
-
-    literal    go to state 52
-    array      go to state 53
-    expr       go to state 82
-    args_list  go to state 83
+    '='  shift, and go to state 68
+    ')'  shift, and go to state 82
+    '+'  shift, and go to state 69
+    '-'  shift, and go to state 70
+    '*'  shift, and go to state 71
+    '/'  shift, and go to state 72
+    '<'  shift, and go to state 73
+    '>'  shift, and go to state 74
+    '&'  shift, and go to state 75
+    '|'  shift, and go to state 76
 
 
 State 64
 
-   37 expr: expr • '+' expr
-   38     | expr • '-' expr
-   39     | expr • '*' expr
-   40     | expr • '/' expr
-   41     | expr • '<' expr
-   42     | expr • '>' expr
-   43     | expr • '=' expr
-   44     | expr • '&' expr
-   45     | expr • '|' expr
-   48     | '(' expr • ')'
+   31 flow_ctrl: KW_WHILE '(' expr • ')' cmd
+   38 expr: expr • '+' expr
+   39     | expr • '-' expr
+   40     | expr • '*' expr
+   41     | expr • '/' expr
+   42     | expr • '<' expr
+   43     | expr • '>' expr
+   44     | expr • '=' expr
+   45     | expr • '&' expr
+   46     | expr • '|' expr
 
-    '='  shift, and go to state 66
-    ')'  shift, and go to state 84
-    '+'  shift, and go to state 67
-    '-'  shift, and go to state 68
-    '*'  shift, and go to state 69
-    '/'  shift, and go to state 70
-    '<'  shift, and go to state 71
-    '>'  shift, and go to state 72
-    '&'  shift, and go to state 73
-    '|'  shift, and go to state 74
+    '='  shift, and go to state 68
+    ')'  shift, and go to state 83
+    '+'  shift, and go to state 69
+    '-'  shift, and go to state 70
+    '*'  shift, and go to state 71
+    '/'  shift, and go to state 72
+    '<'  shift, and go to state 73
+    '>'  shift, and go to state 74
+    '&'  shift, and go to state 75
+    '|'  shift, and go to state 76
 
 
 State 65
 
-   37 expr: expr • '+' expr
-   38     | expr • '-' expr
-   39     | expr • '*' expr
-   40     | expr • '/' expr
-   41     | expr • '<' expr
-   42     | expr • '>' expr
-   43     | expr • '=' expr
-   44     | expr • '&' expr
-   45     | expr • '|' expr
-   46     | '~' expr •
+   48 expr: TOKEN_IDENTIFIER '(' • args_list ')'
 
-    '='  shift, and go to state 66
-    '+'  shift, and go to state 67
-    '-'  shift, and go to state 68
-    '*'  shift, and go to state 69
-    '/'  shift, and go to state 70
-    '<'  shift, and go to state 71
-    '>'  shift, and go to state 72
-    '&'  shift, and go to state 73
-    '|'  shift, and go to state 74
+    TOKEN_IDENTIFIER  shift, and go to state 51
+    LIT_INT           shift, and go to state 17
+    LIT_CHAR          shift, and go to state 18
+    LIT_STRING        shift, and go to state 19
+    '('               shift, and go to state 52
+    '~'               shift, and go to state 53
 
-    '='       [reduce using rule 46 (expr)]
-    '+'       [reduce using rule 46 (expr)]
-    '-'       [reduce using rule 46 (expr)]
-    '*'       [reduce using rule 46 (expr)]
-    '/'       [reduce using rule 46 (expr)]
-    '<'       [reduce using rule 46 (expr)]
-    '>'       [reduce using rule 46 (expr)]
-    '&'       [reduce using rule 46 (expr)]
-    '|'       [reduce using rule 46 (expr)]
-    $default  reduce using rule 46 (expr)
+    $default  reduce using rule 50 (expr)
+
+    literal    go to state 54
+    array      go to state 55
+    expr       go to state 84
+    args_list  go to state 85
 
 
 State 66
 
-   43 expr: expr '=' • expr
+   38 expr: expr • '+' expr
+   39     | expr • '-' expr
+   40     | expr • '*' expr
+   41     | expr • '/' expr
+   42     | expr • '<' expr
+   43     | expr • '>' expr
+   44     | expr • '=' expr
+   45     | expr • '&' expr
+   46     | expr • '|' expr
+   49     | '(' expr • ')'
 
-    TOKEN_IDENTIFIER  shift, and go to state 49
-    LIT_INT           shift, and go to state 17
-    LIT_CHAR          shift, and go to state 18
-    LIT_STRING        shift, and go to state 19
-    '('               shift, and go to state 50
-    '~'               shift, and go to state 51
-
-    $default  reduce using rule 49 (expr)
-
-    literal  go to state 52
-    array    go to state 53
-    expr     go to state 85
+    '='  shift, and go to state 68
+    ')'  shift, and go to state 86
+    '+'  shift, and go to state 69
+    '-'  shift, and go to state 70
+    '*'  shift, and go to state 71
+    '/'  shift, and go to state 72
+    '<'  shift, and go to state 73
+    '>'  shift, and go to state 74
+    '&'  shift, and go to state 75
+    '|'  shift, and go to state 76
 
 
 State 67
 
-   37 expr: expr '+' • expr
+   38 expr: expr • '+' expr
+   39     | expr • '-' expr
+   40     | expr • '*' expr
+   41     | expr • '/' expr
+   42     | expr • '<' expr
+   43     | expr • '>' expr
+   44     | expr • '=' expr
+   45     | expr • '&' expr
+   46     | expr • '|' expr
+   47     | '~' expr •
 
-    TOKEN_IDENTIFIER  shift, and go to state 49
-    LIT_INT           shift, and go to state 17
-    LIT_CHAR          shift, and go to state 18
-    LIT_STRING        shift, and go to state 19
-    '('               shift, and go to state 50
-    '~'               shift, and go to state 51
+    '='  shift, and go to state 68
+    '+'  shift, and go to state 69
+    '-'  shift, and go to state 70
+    '*'  shift, and go to state 71
+    '/'  shift, and go to state 72
+    '<'  shift, and go to state 73
+    '>'  shift, and go to state 74
+    '&'  shift, and go to state 75
+    '|'  shift, and go to state 76
 
-    $default  reduce using rule 49 (expr)
-
-    literal  go to state 52
-    array    go to state 53
-    expr     go to state 86
+    '='       [reduce using rule 47 (expr)]
+    '+'       [reduce using rule 47 (expr)]
+    '-'       [reduce using rule 47 (expr)]
+    '*'       [reduce using rule 47 (expr)]
+    '/'       [reduce using rule 47 (expr)]
+    '<'       [reduce using rule 47 (expr)]
+    '>'       [reduce using rule 47 (expr)]
+    '&'       [reduce using rule 47 (expr)]
+    '|'       [reduce using rule 47 (expr)]
+    $default  reduce using rule 47 (expr)
 
 
 State 68
 
-   38 expr: expr '-' • expr
+   44 expr: expr '=' • expr
 
-    TOKEN_IDENTIFIER  shift, and go to state 49
+    TOKEN_IDENTIFIER  shift, and go to state 51
     LIT_INT           shift, and go to state 17
     LIT_CHAR          shift, and go to state 18
     LIT_STRING        shift, and go to state 19
-    '('               shift, and go to state 50
-    '~'               shift, and go to state 51
+    '('               shift, and go to state 52
+    '~'               shift, and go to state 53
 
-    $default  reduce using rule 49 (expr)
+    $default  reduce using rule 50 (expr)
 
-    literal  go to state 52
-    array    go to state 53
+    literal  go to state 54
+    array    go to state 55
     expr     go to state 87
 
 
 State 69
 
-   39 expr: expr '*' • expr
+   38 expr: expr '+' • expr
 
-    TOKEN_IDENTIFIER  shift, and go to state 49
+    TOKEN_IDENTIFIER  shift, and go to state 51
     LIT_INT           shift, and go to state 17
     LIT_CHAR          shift, and go to state 18
     LIT_STRING        shift, and go to state 19
-    '('               shift, and go to state 50
-    '~'               shift, and go to state 51
+    '('               shift, and go to state 52
+    '~'               shift, and go to state 53
 
-    $default  reduce using rule 49 (expr)
+    $default  reduce using rule 50 (expr)
 
-    literal  go to state 52
-    array    go to state 53
+    literal  go to state 54
+    array    go to state 55
     expr     go to state 88
 
 
 State 70
 
-   40 expr: expr '/' • expr
+   39 expr: expr '-' • expr
 
-    TOKEN_IDENTIFIER  shift, and go to state 49
+    TOKEN_IDENTIFIER  shift, and go to state 51
     LIT_INT           shift, and go to state 17
     LIT_CHAR          shift, and go to state 18
     LIT_STRING        shift, and go to state 19
-    '('               shift, and go to state 50
-    '~'               shift, and go to state 51
+    '('               shift, and go to state 52
+    '~'               shift, and go to state 53
 
-    $default  reduce using rule 49 (expr)
+    $default  reduce using rule 50 (expr)
 
-    literal  go to state 52
-    array    go to state 53
+    literal  go to state 54
+    array    go to state 55
     expr     go to state 89
 
 
 State 71
 
-   41 expr: expr '<' • expr
+   40 expr: expr '*' • expr
 
-    TOKEN_IDENTIFIER  shift, and go to state 49
+    TOKEN_IDENTIFIER  shift, and go to state 51
     LIT_INT           shift, and go to state 17
     LIT_CHAR          shift, and go to state 18
     LIT_STRING        shift, and go to state 19
-    '('               shift, and go to state 50
-    '~'               shift, and go to state 51
+    '('               shift, and go to state 52
+    '~'               shift, and go to state 53
 
-    $default  reduce using rule 49 (expr)
+    $default  reduce using rule 50 (expr)
 
-    literal  go to state 52
-    array    go to state 53
+    literal  go to state 54
+    array    go to state 55
     expr     go to state 90
 
 
 State 72
 
-   42 expr: expr '>' • expr
+   41 expr: expr '/' • expr
 
-    TOKEN_IDENTIFIER  shift, and go to state 49
+    TOKEN_IDENTIFIER  shift, and go to state 51
     LIT_INT           shift, and go to state 17
     LIT_CHAR          shift, and go to state 18
     LIT_STRING        shift, and go to state 19
-    '('               shift, and go to state 50
-    '~'               shift, and go to state 51
+    '('               shift, and go to state 52
+    '~'               shift, and go to state 53
 
-    $default  reduce using rule 49 (expr)
+    $default  reduce using rule 50 (expr)
 
-    literal  go to state 52
-    array    go to state 53
+    literal  go to state 54
+    array    go to state 55
     expr     go to state 91
 
 
 State 73
 
-   44 expr: expr '&' • expr
+   42 expr: expr '<' • expr
 
-    TOKEN_IDENTIFIER  shift, and go to state 49
+    TOKEN_IDENTIFIER  shift, and go to state 51
     LIT_INT           shift, and go to state 17
     LIT_CHAR          shift, and go to state 18
     LIT_STRING        shift, and go to state 19
-    '('               shift, and go to state 50
-    '~'               shift, and go to state 51
+    '('               shift, and go to state 52
+    '~'               shift, and go to state 53
 
-    $default  reduce using rule 49 (expr)
+    $default  reduce using rule 50 (expr)
 
-    literal  go to state 52
-    array    go to state 53
+    literal  go to state 54
+    array    go to state 55
     expr     go to state 92
 
 
 State 74
 
-   45 expr: expr '|' • expr
+   43 expr: expr '>' • expr
 
-    TOKEN_IDENTIFIER  shift, and go to state 49
+    TOKEN_IDENTIFIER  shift, and go to state 51
     LIT_INT           shift, and go to state 17
     LIT_CHAR          shift, and go to state 18
     LIT_STRING        shift, and go to state 19
-    '('               shift, and go to state 50
-    '~'               shift, and go to state 51
+    '('               shift, and go to state 52
+    '~'               shift, and go to state 53
 
-    $default  reduce using rule 49 (expr)
+    $default  reduce using rule 50 (expr)
 
-    literal  go to state 52
-    array    go to state 53
+    literal  go to state 54
+    array    go to state 55
     expr     go to state 93
 
 
 State 75
 
-   52 print_args_list: expr ' ' • print_args_list
+   45 expr: expr '&' • expr
 
-    TOKEN_IDENTIFIER  shift, and go to state 49
+    TOKEN_IDENTIFIER  shift, and go to state 51
     LIT_INT           shift, and go to state 17
     LIT_CHAR          shift, and go to state 18
     LIT_STRING        shift, and go to state 19
-    '('               shift, and go to state 50
-    '~'               shift, and go to state 51
+    '('               shift, and go to state 52
+    '~'               shift, and go to state 53
 
-    $default  reduce using rule 49 (expr)
+    $default  reduce using rule 50 (expr)
 
-    literal          go to state 52
-    array            go to state 53
-    expr             go to state 54
-    print_args_list  go to state 94
+    literal  go to state 54
+    array    go to state 55
+    expr     go to state 94
 
 
 State 76
 
-   27 attribution: TOKEN_IDENTIFIER '=' expr •
-   37 expr: expr • '+' expr
-   38     | expr • '-' expr
-   39     | expr • '*' expr
-   40     | expr • '/' expr
-   41     | expr • '<' expr
-   42     | expr • '>' expr
-   43     | expr • '=' expr
-   44     | expr • '&' expr
-   45     | expr • '|' expr
+   46 expr: expr '|' • expr
 
-    '='  shift, and go to state 66
-    '+'  shift, and go to state 67
-    '-'  shift, and go to state 68
-    '*'  shift, and go to state 69
-    '/'  shift, and go to state 70
-    '<'  shift, and go to state 71
-    '>'  shift, and go to state 72
-    '&'  shift, and go to state 73
-    '|'  shift, and go to state 74
+    TOKEN_IDENTIFIER  shift, and go to state 51
+    LIT_INT           shift, and go to state 17
+    LIT_CHAR          shift, and go to state 18
+    LIT_STRING        shift, and go to state 19
+    '('               shift, and go to state 52
+    '~'               shift, and go to state 53
 
-    $default  reduce using rule 27 (attribution)
+    $default  reduce using rule 50 (expr)
+
+    literal  go to state 54
+    array    go to state 55
+    expr     go to state 95
 
 
 State 77
 
-   32 cmd_list: cmd ';' • cmd_list
+   53 print_args_list: expr ' ' • print_args_list
 
-    KW_IF             shift, and go to state 33
-    KW_WHILE          shift, and go to state 34
-    KW_READ           shift, and go to state 35
-    KW_PRINT          shift, and go to state 36
-    KW_RETURN         shift, and go to state 37
-    TOKEN_IDENTIFIER  shift, and go to state 38
-    '{'               shift, and go to state 39
+    TOKEN_IDENTIFIER  shift, and go to state 51
+    LIT_INT           shift, and go to state 17
+    LIT_CHAR          shift, and go to state 18
+    LIT_STRING        shift, and go to state 19
+    '('               shift, and go to state 52
+    '~'               shift, and go to state 53
 
-    '}'       reduce using rule 33 (cmd_list)
-    $default  reduce using rule 25 (cmd)
+    $default  reduce using rule 50 (expr)
 
-    array        go to state 40
-    cmd          go to state 58
-    attribution  go to state 42
-    flow_ctrl    go to state 43
-    cmd_block    go to state 44
-    cmd_list     go to state 95
+    literal          go to state 54
+    array            go to state 55
+    expr             go to state 56
+    print_args_list  go to state 96
 
 
 State 78
 
-   31 cmd_block: '{' cmd_list '}' •
+   28 attribution: TOKEN_IDENTIFIER '=' expr •
+   38 expr: expr • '+' expr
+   39     | expr • '-' expr
+   40     | expr • '*' expr
+   41     | expr • '/' expr
+   42     | expr • '<' expr
+   43     | expr • '>' expr
+   44     | expr • '=' expr
+   45     | expr • '&' expr
+   46     | expr • '|' expr
 
-    $default  reduce using rule 31 (cmd_block)
+    '='  shift, and go to state 68
+    '+'  shift, and go to state 69
+    '-'  shift, and go to state 70
+    '*'  shift, and go to state 71
+    '/'  shift, and go to state 72
+    '<'  shift, and go to state 73
+    '>'  shift, and go to state 74
+    '&'  shift, and go to state 75
+    '|'  shift, and go to state 76
+
+    $default  reduce using rule 28 (attribution)
 
 
 State 79
 
-   26 attribution: array '=' expr •
-   37 expr: expr • '+' expr
-   38     | expr • '-' expr
-   39     | expr • '*' expr
-   40     | expr • '/' expr
-   41     | expr • '<' expr
-   42     | expr • '>' expr
-   43     | expr • '=' expr
-   44     | expr • '&' expr
-   45     | expr • '|' expr
+   33 cmd_list: cmd ';' • cmd_list
 
-    '='  shift, and go to state 66
-    '+'  shift, and go to state 67
-    '-'  shift, and go to state 68
-    '*'  shift, and go to state 69
-    '/'  shift, and go to state 70
-    '<'  shift, and go to state 71
-    '>'  shift, and go to state 72
-    '&'  shift, and go to state 73
-    '|'  shift, and go to state 74
+    KW_IF             shift, and go to state 35
+    KW_WHILE          shift, and go to state 36
+    KW_READ           shift, and go to state 37
+    KW_PRINT          shift, and go to state 38
+    KW_RETURN         shift, and go to state 39
+    TOKEN_IDENTIFIER  shift, and go to state 40
+    '{'               shift, and go to state 41
 
-    $default  reduce using rule 26 (attribution)
+    '}'       reduce using rule 34 (cmd_list)
+    $default  reduce using rule 26 (cmd)
+
+    array        go to state 42
+    cmd          go to state 60
+    attribution  go to state 44
+    flow_ctrl    go to state 45
+    cmd_block    go to state 46
+    cmd_list     go to state 97
 
 
 State 80
 
-   28 flow_ctrl: KW_IF '(' expr ')' • KW_THEN cmd
-   29          | KW_IF '(' expr ')' • KW_THEN cmd KW_ELSE cmd
+   32 cmd_block: '{' cmd_list '}' •
 
-    KW_THEN  shift, and go to state 96
+    $default  reduce using rule 32 (cmd_block)
 
 
 State 81
 
-   30 flow_ctrl: KW_WHILE '(' expr ')' • cmd
+   27 attribution: array '=' expr •
+   38 expr: expr • '+' expr
+   39     | expr • '-' expr
+   40     | expr • '*' expr
+   41     | expr • '/' expr
+   42     | expr • '<' expr
+   43     | expr • '>' expr
+   44     | expr • '=' expr
+   45     | expr • '&' expr
+   46     | expr • '|' expr
 
-    KW_IF             shift, and go to state 33
-    KW_WHILE          shift, and go to state 34
-    KW_READ           shift, and go to state 35
-    KW_PRINT          shift, and go to state 36
-    KW_RETURN         shift, and go to state 37
-    TOKEN_IDENTIFIER  shift, and go to state 38
-    '{'               shift, and go to state 39
+    '='  shift, and go to state 68
+    '+'  shift, and go to state 69
+    '-'  shift, and go to state 70
+    '*'  shift, and go to state 71
+    '/'  shift, and go to state 72
+    '<'  shift, and go to state 73
+    '>'  shift, and go to state 74
+    '&'  shift, and go to state 75
+    '|'  shift, and go to state 76
 
-    $default  reduce using rule 25 (cmd)
-
-    array        go to state 40
-    cmd          go to state 97
-    attribution  go to state 42
-    flow_ctrl    go to state 43
-    cmd_block    go to state 44
+    $default  reduce using rule 27 (attribution)
 
 
 State 82
 
-   37 expr: expr • '+' expr
-   38     | expr • '-' expr
-   39     | expr • '*' expr
-   40     | expr • '/' expr
-   41     | expr • '<' expr
-   42     | expr • '>' expr
-   43     | expr • '=' expr
-   44     | expr • '&' expr
-   45     | expr • '|' expr
-   50 args_list: expr • ',' args_list
-   51          | expr •
+   29 flow_ctrl: KW_IF '(' expr ')' • KW_THEN cmd
+   30          | KW_IF '(' expr ')' • KW_THEN cmd KW_ELSE cmd
 
-    '='  shift, and go to state 66
-    ','  shift, and go to state 98
-    '+'  shift, and go to state 67
-    '-'  shift, and go to state 68
-    '*'  shift, and go to state 69
-    '/'  shift, and go to state 70
-    '<'  shift, and go to state 71
-    '>'  shift, and go to state 72
-    '&'  shift, and go to state 73
-    '|'  shift, and go to state 74
-
-    $default  reduce using rule 51 (args_list)
+    KW_THEN  shift, and go to state 98
 
 
 State 83
 
-   47 expr: TOKEN_IDENTIFIER '(' args_list • ')'
+   31 flow_ctrl: KW_WHILE '(' expr ')' • cmd
 
-    ')'  shift, and go to state 99
+    KW_IF             shift, and go to state 35
+    KW_WHILE          shift, and go to state 36
+    KW_READ           shift, and go to state 37
+    KW_PRINT          shift, and go to state 38
+    KW_RETURN         shift, and go to state 39
+    TOKEN_IDENTIFIER  shift, and go to state 40
+    '{'               shift, and go to state 41
+
+    $default  reduce using rule 26 (cmd)
+
+    array        go to state 42
+    cmd          go to state 99
+    attribution  go to state 44
+    flow_ctrl    go to state 45
+    cmd_block    go to state 46
 
 
 State 84
 
-   48 expr: '(' expr ')' •
+   38 expr: expr • '+' expr
+   39     | expr • '-' expr
+   40     | expr • '*' expr
+   41     | expr • '/' expr
+   42     | expr • '<' expr
+   43     | expr • '>' expr
+   44     | expr • '=' expr
+   45     | expr • '&' expr
+   46     | expr • '|' expr
+   51 args_list: expr • ',' args_list
+   52          | expr •
 
-    $default  reduce using rule 48 (expr)
+    '='  shift, and go to state 68
+    ','  shift, and go to state 100
+    '+'  shift, and go to state 69
+    '-'  shift, and go to state 70
+    '*'  shift, and go to state 71
+    '/'  shift, and go to state 72
+    '<'  shift, and go to state 73
+    '>'  shift, and go to state 74
+    '&'  shift, and go to state 75
+    '|'  shift, and go to state 76
+
+    $default  reduce using rule 52 (args_list)
 
 
 State 85
 
-   37 expr: expr • '+' expr
-   38     | expr • '-' expr
-   39     | expr • '*' expr
-   40     | expr • '/' expr
-   41     | expr • '<' expr
-   42     | expr • '>' expr
-   43     | expr • '=' expr
-   43     | expr '=' expr •
-   44     | expr • '&' expr
-   45     | expr • '|' expr
+   48 expr: TOKEN_IDENTIFIER '(' args_list • ')'
 
-    '='  shift, and go to state 66
-    '+'  shift, and go to state 67
-    '-'  shift, and go to state 68
-    '*'  shift, and go to state 69
-    '/'  shift, and go to state 70
-    '<'  shift, and go to state 71
-    '>'  shift, and go to state 72
-    '&'  shift, and go to state 73
-    '|'  shift, and go to state 74
-
-    '='       [reduce using rule 43 (expr)]
-    '+'       [reduce using rule 43 (expr)]
-    '-'       [reduce using rule 43 (expr)]
-    '*'       [reduce using rule 43 (expr)]
-    '/'       [reduce using rule 43 (expr)]
-    '<'       [reduce using rule 43 (expr)]
-    '>'       [reduce using rule 43 (expr)]
-    '&'       [reduce using rule 43 (expr)]
-    '|'       [reduce using rule 43 (expr)]
-    $default  reduce using rule 43 (expr)
+    ')'  shift, and go to state 101
 
 
 State 86
 
-   37 expr: expr • '+' expr
-   37     | expr '+' expr •
-   38     | expr • '-' expr
-   39     | expr • '*' expr
-   40     | expr • '/' expr
-   41     | expr • '<' expr
-   42     | expr • '>' expr
-   43     | expr • '=' expr
-   44     | expr • '&' expr
-   45     | expr • '|' expr
+   49 expr: '(' expr ')' •
 
-    '='  shift, and go to state 66
-    '+'  shift, and go to state 67
-    '-'  shift, and go to state 68
-    '*'  shift, and go to state 69
-    '/'  shift, and go to state 70
-    '<'  shift, and go to state 71
-    '>'  shift, and go to state 72
-    '&'  shift, and go to state 73
-    '|'  shift, and go to state 74
-
-    '='       [reduce using rule 37 (expr)]
-    '+'       [reduce using rule 37 (expr)]
-    '-'       [reduce using rule 37 (expr)]
-    '*'       [reduce using rule 37 (expr)]
-    '/'       [reduce using rule 37 (expr)]
-    '<'       [reduce using rule 37 (expr)]
-    '>'       [reduce using rule 37 (expr)]
-    '&'       [reduce using rule 37 (expr)]
-    '|'       [reduce using rule 37 (expr)]
-    $default  reduce using rule 37 (expr)
+    $default  reduce using rule 49 (expr)
 
 
 State 87
 
-   37 expr: expr • '+' expr
-   38     | expr • '-' expr
-   38     | expr '-' expr •
-   39     | expr • '*' expr
-   40     | expr • '/' expr
-   41     | expr • '<' expr
-   42     | expr • '>' expr
-   43     | expr • '=' expr
-   44     | expr • '&' expr
-   45     | expr • '|' expr
+   38 expr: expr • '+' expr
+   39     | expr • '-' expr
+   40     | expr • '*' expr
+   41     | expr • '/' expr
+   42     | expr • '<' expr
+   43     | expr • '>' expr
+   44     | expr • '=' expr
+   44     | expr '=' expr •
+   45     | expr • '&' expr
+   46     | expr • '|' expr
 
-    '='  shift, and go to state 66
-    '+'  shift, and go to state 67
-    '-'  shift, and go to state 68
-    '*'  shift, and go to state 69
-    '/'  shift, and go to state 70
-    '<'  shift, and go to state 71
-    '>'  shift, and go to state 72
-    '&'  shift, and go to state 73
-    '|'  shift, and go to state 74
-
-    '='       [reduce using rule 38 (expr)]
-    '+'       [reduce using rule 38 (expr)]
-    '-'       [reduce using rule 38 (expr)]
-    '*'       [reduce using rule 38 (expr)]
-    '/'       [reduce using rule 38 (expr)]
-    '<'       [reduce using rule 38 (expr)]
-    '>'       [reduce using rule 38 (expr)]
-    '&'       [reduce using rule 38 (expr)]
-    '|'       [reduce using rule 38 (expr)]
-    $default  reduce using rule 38 (expr)
-
-
-State 88
-
-   37 expr: expr • '+' expr
-   38     | expr • '-' expr
-   39     | expr • '*' expr
-   39     | expr '*' expr •
-   40     | expr • '/' expr
-   41     | expr • '<' expr
-   42     | expr • '>' expr
-   43     | expr • '=' expr
-   44     | expr • '&' expr
-   45     | expr • '|' expr
-
-    '='  shift, and go to state 66
-    '+'  shift, and go to state 67
-    '-'  shift, and go to state 68
-    '*'  shift, and go to state 69
-    '/'  shift, and go to state 70
-    '<'  shift, and go to state 71
-    '>'  shift, and go to state 72
-    '&'  shift, and go to state 73
-    '|'  shift, and go to state 74
-
-    '='       [reduce using rule 39 (expr)]
-    '+'       [reduce using rule 39 (expr)]
-    '-'       [reduce using rule 39 (expr)]
-    '*'       [reduce using rule 39 (expr)]
-    '/'       [reduce using rule 39 (expr)]
-    '<'       [reduce using rule 39 (expr)]
-    '>'       [reduce using rule 39 (expr)]
-    '&'       [reduce using rule 39 (expr)]
-    '|'       [reduce using rule 39 (expr)]
-    $default  reduce using rule 39 (expr)
-
-
-State 89
-
-   37 expr: expr • '+' expr
-   38     | expr • '-' expr
-   39     | expr • '*' expr
-   40     | expr • '/' expr
-   40     | expr '/' expr •
-   41     | expr • '<' expr
-   42     | expr • '>' expr
-   43     | expr • '=' expr
-   44     | expr • '&' expr
-   45     | expr • '|' expr
-
-    '='  shift, and go to state 66
-    '+'  shift, and go to state 67
-    '-'  shift, and go to state 68
-    '*'  shift, and go to state 69
-    '/'  shift, and go to state 70
-    '<'  shift, and go to state 71
-    '>'  shift, and go to state 72
-    '&'  shift, and go to state 73
-    '|'  shift, and go to state 74
-
-    '='       [reduce using rule 40 (expr)]
-    '+'       [reduce using rule 40 (expr)]
-    '-'       [reduce using rule 40 (expr)]
-    '*'       [reduce using rule 40 (expr)]
-    '/'       [reduce using rule 40 (expr)]
-    '<'       [reduce using rule 40 (expr)]
-    '>'       [reduce using rule 40 (expr)]
-    '&'       [reduce using rule 40 (expr)]
-    '|'       [reduce using rule 40 (expr)]
-    $default  reduce using rule 40 (expr)
-
-
-State 90
-
-   37 expr: expr • '+' expr
-   38     | expr • '-' expr
-   39     | expr • '*' expr
-   40     | expr • '/' expr
-   41     | expr • '<' expr
-   41     | expr '<' expr •
-   42     | expr • '>' expr
-   43     | expr • '=' expr
-   44     | expr • '&' expr
-   45     | expr • '|' expr
-
-    '='  shift, and go to state 66
-    '+'  shift, and go to state 67
-    '-'  shift, and go to state 68
-    '*'  shift, and go to state 69
-    '/'  shift, and go to state 70
-    '<'  shift, and go to state 71
-    '>'  shift, and go to state 72
-    '&'  shift, and go to state 73
-    '|'  shift, and go to state 74
-
-    '='       [reduce using rule 41 (expr)]
-    '+'       [reduce using rule 41 (expr)]
-    '-'       [reduce using rule 41 (expr)]
-    '*'       [reduce using rule 41 (expr)]
-    '/'       [reduce using rule 41 (expr)]
-    '<'       [reduce using rule 41 (expr)]
-    '>'       [reduce using rule 41 (expr)]
-    '&'       [reduce using rule 41 (expr)]
-    '|'       [reduce using rule 41 (expr)]
-    $default  reduce using rule 41 (expr)
-
-
-State 91
-
-   37 expr: expr • '+' expr
-   38     | expr • '-' expr
-   39     | expr • '*' expr
-   40     | expr • '/' expr
-   41     | expr • '<' expr
-   42     | expr • '>' expr
-   42     | expr '>' expr •
-   43     | expr • '=' expr
-   44     | expr • '&' expr
-   45     | expr • '|' expr
-
-    '='  shift, and go to state 66
-    '+'  shift, and go to state 67
-    '-'  shift, and go to state 68
-    '*'  shift, and go to state 69
-    '/'  shift, and go to state 70
-    '<'  shift, and go to state 71
-    '>'  shift, and go to state 72
-    '&'  shift, and go to state 73
-    '|'  shift, and go to state 74
-
-    '='       [reduce using rule 42 (expr)]
-    '+'       [reduce using rule 42 (expr)]
-    '-'       [reduce using rule 42 (expr)]
-    '*'       [reduce using rule 42 (expr)]
-    '/'       [reduce using rule 42 (expr)]
-    '<'       [reduce using rule 42 (expr)]
-    '>'       [reduce using rule 42 (expr)]
-    '&'       [reduce using rule 42 (expr)]
-    '|'       [reduce using rule 42 (expr)]
-    $default  reduce using rule 42 (expr)
-
-
-State 92
-
-   37 expr: expr • '+' expr
-   38     | expr • '-' expr
-   39     | expr • '*' expr
-   40     | expr • '/' expr
-   41     | expr • '<' expr
-   42     | expr • '>' expr
-   43     | expr • '=' expr
-   44     | expr • '&' expr
-   44     | expr '&' expr •
-   45     | expr • '|' expr
-
-    '='  shift, and go to state 66
-    '+'  shift, and go to state 67
-    '-'  shift, and go to state 68
-    '*'  shift, and go to state 69
-    '/'  shift, and go to state 70
-    '<'  shift, and go to state 71
-    '>'  shift, and go to state 72
-    '&'  shift, and go to state 73
-    '|'  shift, and go to state 74
+    '='  shift, and go to state 68
+    '+'  shift, and go to state 69
+    '-'  shift, and go to state 70
+    '*'  shift, and go to state 71
+    '/'  shift, and go to state 72
+    '<'  shift, and go to state 73
+    '>'  shift, and go to state 74
+    '&'  shift, and go to state 75
+    '|'  shift, and go to state 76
 
     '='       [reduce using rule 44 (expr)]
     '+'       [reduce using rule 44 (expr)]
@@ -1590,28 +1365,238 @@ State 92
     $default  reduce using rule 44 (expr)
 
 
+State 88
+
+   38 expr: expr • '+' expr
+   38     | expr '+' expr •
+   39     | expr • '-' expr
+   40     | expr • '*' expr
+   41     | expr • '/' expr
+   42     | expr • '<' expr
+   43     | expr • '>' expr
+   44     | expr • '=' expr
+   45     | expr • '&' expr
+   46     | expr • '|' expr
+
+    '='  shift, and go to state 68
+    '+'  shift, and go to state 69
+    '-'  shift, and go to state 70
+    '*'  shift, and go to state 71
+    '/'  shift, and go to state 72
+    '<'  shift, and go to state 73
+    '>'  shift, and go to state 74
+    '&'  shift, and go to state 75
+    '|'  shift, and go to state 76
+
+    '='       [reduce using rule 38 (expr)]
+    '+'       [reduce using rule 38 (expr)]
+    '-'       [reduce using rule 38 (expr)]
+    '*'       [reduce using rule 38 (expr)]
+    '/'       [reduce using rule 38 (expr)]
+    '<'       [reduce using rule 38 (expr)]
+    '>'       [reduce using rule 38 (expr)]
+    '&'       [reduce using rule 38 (expr)]
+    '|'       [reduce using rule 38 (expr)]
+    $default  reduce using rule 38 (expr)
+
+
+State 89
+
+   38 expr: expr • '+' expr
+   39     | expr • '-' expr
+   39     | expr '-' expr •
+   40     | expr • '*' expr
+   41     | expr • '/' expr
+   42     | expr • '<' expr
+   43     | expr • '>' expr
+   44     | expr • '=' expr
+   45     | expr • '&' expr
+   46     | expr • '|' expr
+
+    '='  shift, and go to state 68
+    '+'  shift, and go to state 69
+    '-'  shift, and go to state 70
+    '*'  shift, and go to state 71
+    '/'  shift, and go to state 72
+    '<'  shift, and go to state 73
+    '>'  shift, and go to state 74
+    '&'  shift, and go to state 75
+    '|'  shift, and go to state 76
+
+    '='       [reduce using rule 39 (expr)]
+    '+'       [reduce using rule 39 (expr)]
+    '-'       [reduce using rule 39 (expr)]
+    '*'       [reduce using rule 39 (expr)]
+    '/'       [reduce using rule 39 (expr)]
+    '<'       [reduce using rule 39 (expr)]
+    '>'       [reduce using rule 39 (expr)]
+    '&'       [reduce using rule 39 (expr)]
+    '|'       [reduce using rule 39 (expr)]
+    $default  reduce using rule 39 (expr)
+
+
+State 90
+
+   38 expr: expr • '+' expr
+   39     | expr • '-' expr
+   40     | expr • '*' expr
+   40     | expr '*' expr •
+   41     | expr • '/' expr
+   42     | expr • '<' expr
+   43     | expr • '>' expr
+   44     | expr • '=' expr
+   45     | expr • '&' expr
+   46     | expr • '|' expr
+
+    '='  shift, and go to state 68
+    '+'  shift, and go to state 69
+    '-'  shift, and go to state 70
+    '*'  shift, and go to state 71
+    '/'  shift, and go to state 72
+    '<'  shift, and go to state 73
+    '>'  shift, and go to state 74
+    '&'  shift, and go to state 75
+    '|'  shift, and go to state 76
+
+    '='       [reduce using rule 40 (expr)]
+    '+'       [reduce using rule 40 (expr)]
+    '-'       [reduce using rule 40 (expr)]
+    '*'       [reduce using rule 40 (expr)]
+    '/'       [reduce using rule 40 (expr)]
+    '<'       [reduce using rule 40 (expr)]
+    '>'       [reduce using rule 40 (expr)]
+    '&'       [reduce using rule 40 (expr)]
+    '|'       [reduce using rule 40 (expr)]
+    $default  reduce using rule 40 (expr)
+
+
+State 91
+
+   38 expr: expr • '+' expr
+   39     | expr • '-' expr
+   40     | expr • '*' expr
+   41     | expr • '/' expr
+   41     | expr '/' expr •
+   42     | expr • '<' expr
+   43     | expr • '>' expr
+   44     | expr • '=' expr
+   45     | expr • '&' expr
+   46     | expr • '|' expr
+
+    '='  shift, and go to state 68
+    '+'  shift, and go to state 69
+    '-'  shift, and go to state 70
+    '*'  shift, and go to state 71
+    '/'  shift, and go to state 72
+    '<'  shift, and go to state 73
+    '>'  shift, and go to state 74
+    '&'  shift, and go to state 75
+    '|'  shift, and go to state 76
+
+    '='       [reduce using rule 41 (expr)]
+    '+'       [reduce using rule 41 (expr)]
+    '-'       [reduce using rule 41 (expr)]
+    '*'       [reduce using rule 41 (expr)]
+    '/'       [reduce using rule 41 (expr)]
+    '<'       [reduce using rule 41 (expr)]
+    '>'       [reduce using rule 41 (expr)]
+    '&'       [reduce using rule 41 (expr)]
+    '|'       [reduce using rule 41 (expr)]
+    $default  reduce using rule 41 (expr)
+
+
+State 92
+
+   38 expr: expr • '+' expr
+   39     | expr • '-' expr
+   40     | expr • '*' expr
+   41     | expr • '/' expr
+   42     | expr • '<' expr
+   42     | expr '<' expr •
+   43     | expr • '>' expr
+   44     | expr • '=' expr
+   45     | expr • '&' expr
+   46     | expr • '|' expr
+
+    '='  shift, and go to state 68
+    '+'  shift, and go to state 69
+    '-'  shift, and go to state 70
+    '*'  shift, and go to state 71
+    '/'  shift, and go to state 72
+    '<'  shift, and go to state 73
+    '>'  shift, and go to state 74
+    '&'  shift, and go to state 75
+    '|'  shift, and go to state 76
+
+    '='       [reduce using rule 42 (expr)]
+    '+'       [reduce using rule 42 (expr)]
+    '-'       [reduce using rule 42 (expr)]
+    '*'       [reduce using rule 42 (expr)]
+    '/'       [reduce using rule 42 (expr)]
+    '<'       [reduce using rule 42 (expr)]
+    '>'       [reduce using rule 42 (expr)]
+    '&'       [reduce using rule 42 (expr)]
+    '|'       [reduce using rule 42 (expr)]
+    $default  reduce using rule 42 (expr)
+
+
 State 93
 
-   37 expr: expr • '+' expr
-   38     | expr • '-' expr
-   39     | expr • '*' expr
-   40     | expr • '/' expr
-   41     | expr • '<' expr
-   42     | expr • '>' expr
-   43     | expr • '=' expr
-   44     | expr • '&' expr
-   45     | expr • '|' expr
-   45     | expr '|' expr •
+   38 expr: expr • '+' expr
+   39     | expr • '-' expr
+   40     | expr • '*' expr
+   41     | expr • '/' expr
+   42     | expr • '<' expr
+   43     | expr • '>' expr
+   43     | expr '>' expr •
+   44     | expr • '=' expr
+   45     | expr • '&' expr
+   46     | expr • '|' expr
 
-    '='  shift, and go to state 66
-    '+'  shift, and go to state 67
-    '-'  shift, and go to state 68
-    '*'  shift, and go to state 69
-    '/'  shift, and go to state 70
-    '<'  shift, and go to state 71
-    '>'  shift, and go to state 72
-    '&'  shift, and go to state 73
-    '|'  shift, and go to state 74
+    '='  shift, and go to state 68
+    '+'  shift, and go to state 69
+    '-'  shift, and go to state 70
+    '*'  shift, and go to state 71
+    '/'  shift, and go to state 72
+    '<'  shift, and go to state 73
+    '>'  shift, and go to state 74
+    '&'  shift, and go to state 75
+    '|'  shift, and go to state 76
+
+    '='       [reduce using rule 43 (expr)]
+    '+'       [reduce using rule 43 (expr)]
+    '-'       [reduce using rule 43 (expr)]
+    '*'       [reduce using rule 43 (expr)]
+    '/'       [reduce using rule 43 (expr)]
+    '<'       [reduce using rule 43 (expr)]
+    '>'       [reduce using rule 43 (expr)]
+    '&'       [reduce using rule 43 (expr)]
+    '|'       [reduce using rule 43 (expr)]
+    $default  reduce using rule 43 (expr)
+
+
+State 94
+
+   38 expr: expr • '+' expr
+   39     | expr • '-' expr
+   40     | expr • '*' expr
+   41     | expr • '/' expr
+   42     | expr • '<' expr
+   43     | expr • '>' expr
+   44     | expr • '=' expr
+   45     | expr • '&' expr
+   45     | expr '&' expr •
+   46     | expr • '|' expr
+
+    '='  shift, and go to state 68
+    '+'  shift, and go to state 69
+    '-'  shift, and go to state 70
+    '*'  shift, and go to state 71
+    '/'  shift, and go to state 72
+    '<'  shift, and go to state 73
+    '>'  shift, and go to state 74
+    '&'  shift, and go to state 75
+    '|'  shift, and go to state 76
 
     '='       [reduce using rule 45 (expr)]
     '+'       [reduce using rule 45 (expr)]
@@ -1625,116 +1610,151 @@ State 93
     $default  reduce using rule 45 (expr)
 
 
-State 94
-
-   52 print_args_list: expr ' ' print_args_list •
-
-    $default  reduce using rule 52 (print_args_list)
-
-
 State 95
 
-   32 cmd_list: cmd ';' cmd_list •
+   38 expr: expr • '+' expr
+   39     | expr • '-' expr
+   40     | expr • '*' expr
+   41     | expr • '/' expr
+   42     | expr • '<' expr
+   43     | expr • '>' expr
+   44     | expr • '=' expr
+   45     | expr • '&' expr
+   46     | expr • '|' expr
+   46     | expr '|' expr •
 
-    $default  reduce using rule 32 (cmd_list)
+    '='  shift, and go to state 68
+    '+'  shift, and go to state 69
+    '-'  shift, and go to state 70
+    '*'  shift, and go to state 71
+    '/'  shift, and go to state 72
+    '<'  shift, and go to state 73
+    '>'  shift, and go to state 74
+    '&'  shift, and go to state 75
+    '|'  shift, and go to state 76
+
+    '='       [reduce using rule 46 (expr)]
+    '+'       [reduce using rule 46 (expr)]
+    '-'       [reduce using rule 46 (expr)]
+    '*'       [reduce using rule 46 (expr)]
+    '/'       [reduce using rule 46 (expr)]
+    '<'       [reduce using rule 46 (expr)]
+    '>'       [reduce using rule 46 (expr)]
+    '&'       [reduce using rule 46 (expr)]
+    '|'       [reduce using rule 46 (expr)]
+    $default  reduce using rule 46 (expr)
 
 
 State 96
 
-   28 flow_ctrl: KW_IF '(' expr ')' KW_THEN • cmd
-   29          | KW_IF '(' expr ')' KW_THEN • cmd KW_ELSE cmd
+   53 print_args_list: expr ' ' print_args_list •
 
-    KW_IF             shift, and go to state 33
-    KW_WHILE          shift, and go to state 34
-    KW_READ           shift, and go to state 35
-    KW_PRINT          shift, and go to state 36
-    KW_RETURN         shift, and go to state 37
-    TOKEN_IDENTIFIER  shift, and go to state 38
-    '{'               shift, and go to state 39
-
-    $default  reduce using rule 25 (cmd)
-
-    array        go to state 40
-    cmd          go to state 100
-    attribution  go to state 42
-    flow_ctrl    go to state 43
-    cmd_block    go to state 44
+    $default  reduce using rule 53 (print_args_list)
 
 
 State 97
 
-   30 flow_ctrl: KW_WHILE '(' expr ')' cmd •
+   33 cmd_list: cmd ';' cmd_list •
 
-    $default  reduce using rule 30 (flow_ctrl)
+    $default  reduce using rule 33 (cmd_list)
 
 
 State 98
 
-   50 args_list: expr ',' • args_list
+   29 flow_ctrl: KW_IF '(' expr ')' KW_THEN • cmd
+   30          | KW_IF '(' expr ')' KW_THEN • cmd KW_ELSE cmd
 
-    TOKEN_IDENTIFIER  shift, and go to state 49
-    LIT_INT           shift, and go to state 17
-    LIT_CHAR          shift, and go to state 18
-    LIT_STRING        shift, and go to state 19
-    '('               shift, and go to state 50
-    '~'               shift, and go to state 51
+    KW_IF             shift, and go to state 35
+    KW_WHILE          shift, and go to state 36
+    KW_READ           shift, and go to state 37
+    KW_PRINT          shift, and go to state 38
+    KW_RETURN         shift, and go to state 39
+    TOKEN_IDENTIFIER  shift, and go to state 40
+    '{'               shift, and go to state 41
 
-    $default  reduce using rule 49 (expr)
+    $default  reduce using rule 26 (cmd)
 
-    literal    go to state 52
-    array      go to state 53
-    expr       go to state 82
-    args_list  go to state 101
+    array        go to state 42
+    cmd          go to state 102
+    attribution  go to state 44
+    flow_ctrl    go to state 45
+    cmd_block    go to state 46
 
 
 State 99
 
-   47 expr: TOKEN_IDENTIFIER '(' args_list ')' •
+   31 flow_ctrl: KW_WHILE '(' expr ')' cmd •
 
-    $default  reduce using rule 47 (expr)
+    $default  reduce using rule 31 (flow_ctrl)
 
 
 State 100
 
-   28 flow_ctrl: KW_IF '(' expr ')' KW_THEN cmd •
-   29          | KW_IF '(' expr ')' KW_THEN cmd • KW_ELSE cmd
+   51 args_list: expr ',' • args_list
 
-    KW_ELSE  shift, and go to state 102
+    TOKEN_IDENTIFIER  shift, and go to state 51
+    LIT_INT           shift, and go to state 17
+    LIT_CHAR          shift, and go to state 18
+    LIT_STRING        shift, and go to state 19
+    '('               shift, and go to state 52
+    '~'               shift, and go to state 53
 
-    KW_ELSE   [reduce using rule 28 (flow_ctrl)]
-    $default  reduce using rule 28 (flow_ctrl)
+    $default  reduce using rule 50 (expr)
+
+    literal    go to state 54
+    array      go to state 55
+    expr       go to state 84
+    args_list  go to state 103
 
 
 State 101
 
-   50 args_list: expr ',' args_list •
+   48 expr: TOKEN_IDENTIFIER '(' args_list ')' •
 
-    $default  reduce using rule 50 (args_list)
+    $default  reduce using rule 48 (expr)
 
 
 State 102
 
-   29 flow_ctrl: KW_IF '(' expr ')' KW_THEN cmd KW_ELSE • cmd
+   29 flow_ctrl: KW_IF '(' expr ')' KW_THEN cmd •
+   30          | KW_IF '(' expr ')' KW_THEN cmd • KW_ELSE cmd
 
-    KW_IF             shift, and go to state 33
-    KW_WHILE          shift, and go to state 34
-    KW_READ           shift, and go to state 35
-    KW_PRINT          shift, and go to state 36
-    KW_RETURN         shift, and go to state 37
-    TOKEN_IDENTIFIER  shift, and go to state 38
-    '{'               shift, and go to state 39
+    KW_ELSE  shift, and go to state 104
 
-    $default  reduce using rule 25 (cmd)
-
-    array        go to state 40
-    cmd          go to state 103
-    attribution  go to state 42
-    flow_ctrl    go to state 43
-    cmd_block    go to state 44
+    KW_ELSE   [reduce using rule 29 (flow_ctrl)]
+    $default  reduce using rule 29 (flow_ctrl)
 
 
 State 103
 
-   29 flow_ctrl: KW_IF '(' expr ')' KW_THEN cmd KW_ELSE cmd •
+   51 args_list: expr ',' args_list •
 
-    $default  reduce using rule 29 (flow_ctrl)
+    $default  reduce using rule 51 (args_list)
+
+
+State 104
+
+   30 flow_ctrl: KW_IF '(' expr ')' KW_THEN cmd KW_ELSE • cmd
+
+    KW_IF             shift, and go to state 35
+    KW_WHILE          shift, and go to state 36
+    KW_READ           shift, and go to state 37
+    KW_PRINT          shift, and go to state 38
+    KW_RETURN         shift, and go to state 39
+    TOKEN_IDENTIFIER  shift, and go to state 40
+    '{'               shift, and go to state 41
+
+    $default  reduce using rule 26 (cmd)
+
+    array        go to state 42
+    cmd          go to state 105
+    attribution  go to state 44
+    flow_ctrl    go to state 45
+    cmd_block    go to state 46
+
+
+State 105
+
+   30 flow_ctrl: KW_IF '(' expr ')' KW_THEN cmd KW_ELSE cmd •
+
+    $default  reduce using rule 30 (flow_ctrl)

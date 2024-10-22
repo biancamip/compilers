@@ -30,7 +30,7 @@ int main(int argc, char **argv)
 	}
 	else
 	{
-		printf("Syntax error at line @ %d.\n", getLineNumber());
+		printf("Syntax error at line %d.\n", getLineNumber());
 		exit(3);
 	}
 
