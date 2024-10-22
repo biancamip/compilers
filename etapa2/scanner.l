@@ -5,9 +5,10 @@
     #include <string>
     #include <map>
 
-    #define SYMBOL_LIT_INT 1
-    #define SYMBOL_LIT_CHAR 2
-    #define SYMBOL_IDENTIFIER 7
+    #define ENTRY_IDENTIFIER 0
+    #define ENTRY_LIT_INT 1
+    #define ENTRY_LIT_CHAR 2
+    #define ENTRY_LIT_STRING 6
 
     #define YY_NO_UNPUT
     
@@ -17,6 +18,7 @@
 
     void initMe() {
         symbolsTable = std::map<std::string, int>();    // re-init the map
+        lines = 1;
         running = 1;
     }
 
