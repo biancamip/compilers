@@ -4,20 +4,16 @@
     #include <stdio.h>
     #include <string>
     #include <map>
-
-    #define ENTRY_IDENTIFIER 0
-    #define ENTRY_LIT_INT 1
-    #define ENTRY_LIT_CHAR 2
-    #define ENTRY_LIT_STRING 6
+    #include "parser.tab.h"
 
     #define YY_NO_UNPUT
     
     int running = 0;
     int lines = 1;
-    std::map<std::string, int> symbolsTable;
+    std::map<std::string, table_entry> symbolsTable;
 
     void initMe() {
-        symbolsTable = std::map<std::string, int>();    // re-init the map
+        symbolsTable = std::map<std::string, table_entry>();    // re-init the map
         lines = 1;
         running = 1;
     }
@@ -30,8 +26,9 @@
         return running;
     }
 
-    void insertSymbol(std::string value, int symbolType) {
-        symbolsTable.insert(std::make_pair(value, symbolType));
+    void insertSymbol(std::string symbolValue, int symbolType) {
+        table_entry symbolEntry = { symbolType, symbolValue };
+        symbolsTable.insert(symbolEntry);
         return;
     }
 
@@ -61,10 +58,10 @@
 "print"                             { return KW_PRINT; }
 "return"                            { return KW_RETURN; }
 
-"#"[0-9]+                           { insertSymbol(yytext, ENTRY_LIT_INT); return LIT_INT; }
-"'"."'"                             { insertSymbol(yytext, ENTRY_LIT_CHAR); return LIT_CHAR; }
-\"([^"\\]|\\.)*\"                   { insertSymbol(yytext, ENTRY_LIT_STRING); return LIT_STRING; }
-[a-zA-Z0-9]+                        { insertSymbol(yytext, ENTRY_IDENTIFIER); return TK_IDENTIFIER; }
+"#"[0-9]+                           { insertSymbol(yytext, SYMBOL_LIT_INT); return LIT_INT; }
+"'"."'"                             { insertSymbol(yytext, SYMBOL_LIT_CHAR); return LIT_CHAR; }
+\"([^"\\]|\\.)*\"                   { insertSymbol(yytext, SYMBOL_LIT_STRING); return LIT_STRING; }
+[a-zA-Z0-9]+                        { insertSymbol(yytext, SYMBOL_IDENTIFIER); return TK_IDENTIFIER; }
 
 \,|\;|\:|\(|\)|\[|\]|\{|\}          { return yytext[0]; }
 \=|\+|\-|\*|\/|\%|\<|\>|\&|\||\~    { return yytext[0]; }
