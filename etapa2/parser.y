@@ -71,6 +71,7 @@ func_params_list:
 cmd:
 	cmd_single
 	| cmd_block
+	| cmd_list
 	;
 
 cmd_single:
